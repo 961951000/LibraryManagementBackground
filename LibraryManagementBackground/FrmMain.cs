@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
@@ -84,7 +85,7 @@ namespace LibraryManagementBackground
             }
         }
         /// <summary>
-        /// 查询仪器
+        /// 标签转换-查询
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -158,6 +159,7 @@ namespace LibraryManagementBackground
             form.Success += Success;
             form.ShowDialog();
         }
+
         /// <summary>
         /// 标签转换-表格导入
         /// </summary>
@@ -165,16 +167,48 @@ namespace LibraryManagementBackground
         /// <param name="e"></param>
         private void btnLabelSwitchingImport_Click(object sender, EventArgs e)
         {
-            var fileDialog = new OpenFileDialog
+            try
             {
-                Multiselect = true,
-                Title = @"请选择文件",
-                Filter = @"所有文件(*.*)|*.*"
-            };
-            if (fileDialog.ShowDialog() == DialogResult.OK)
+                var fileDialog = new OpenFileDialog
+                {
+                    Multiselect = true,
+                    Title = @"请选择文件",
+                    Filter = @"所有文件(*.*)|*.*"
+                };
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var file = fileDialog.FileName;
+                    var dt = GetExcel(file);
+                    using (var db = new MsSqlDbContext())
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            var entity = new TBook
+                            {
+                                Tid = Convert.ToString(dr[0]),
+                                Name = Convert.ToString(dr[1]),
+                                Author = Convert.ToString(dr[2]),
+                                Createdate = DateTime.Now,
+                                Updatedate = DateTime.Now,
+                                Barcode = "默认",
+                                Callcode = "默认",
+                                Status = "默认",
+                                Createby = 0,
+                                Updateby = 0
+                            };
+                            db.Book.Add(entity);
+                        }
+                        db.SaveChanges();
+                    }
+                    btnLabelSwitchingQuery_Click(null, null);
+                    MessageBox.Show(@"操作成功！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
             {
-                string file = fileDialog.FileName;
-                MessageBox.Show("已选择文件:" + file, "选择文件提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"操作失败！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                throw;
+
             }
         }
         /// <summary>
@@ -184,14 +218,30 @@ namespace LibraryManagementBackground
         /// <param name="e"></param>
         private void btnLabelSwitchingDownload_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog()
+            btnLabelSwitchingDownload.Enabled = false;
+            try
             {
-                Description = @"请选择文件路径"
-            };
-            if (dialog.ShowDialog() == DialogResult.OK)
+                var dialog = new FolderBrowserDialog()
+                {
+                    Description = @"请选择文件保存路径"
+                };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var foldPath = dialog.SelectedPath;
+                    var path = Path.GetFullPath(@"../../Resource/Tool/标签转换导入表格.xlsx");
+                    var filename = Path.Combine(foldPath, Path.GetFileName(path));
+                    DownloadFile(path, filename, prgLabelSwitching, lblLabelSwitchingBar);
+                    MessageBox.Show(@"文件下载结束！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
             {
-                string foldPath = dialog.SelectedPath;
-                MessageBox.Show("已选择文件夹:" + foldPath, "选择文件夹提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"操作失败！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                throw;
+            }
+            finally
+            {
+                btnLabelSwitchingDownload.Enabled = true;
             }
         }
         /// <summary>
@@ -286,19 +336,25 @@ namespace LibraryManagementBackground
         /// <param name="filename">下载后的存放地址</param>        
         /// <param name="prog">用于显示的进度条</param>        
         /// <param name="label">用于显示的进度条百分比</param> 
-        public void DownloadFile(string path, string filename, ProgressBar prog, Label label)
+        private void DownloadFile(string path, string filename, ProgressBar prog, Label label)
         {
+            var request = (FileWebRequest)WebRequest.Create(path);
+            var response = (FileWebResponse)request.GetResponse();
+            var totalBytes = response.ContentLength;
+            if (totalBytes > int.MaxValue)
+            {
+                MessageBox.Show(@"下载文件大小超过限制");
+                return;
+            }
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(path);
-                var response = (HttpWebResponse)request.GetResponse();
-                var totalBytes = response.ContentLength;
                 if (prog != null)
                 {
+                    prog.Visible = true;
                     prog.Maximum = (int)totalBytes;
                 }
                 var st = response.GetResponseStream();
-                var so = new System.IO.FileStream(filename, System.IO.FileMode.Create);
+                var so = new FileStream(filename, FileMode.Create);
                 long totalDownloadedByte = 0;
                 var by = new byte[1024];
                 if (st != null)
@@ -314,9 +370,8 @@ namespace LibraryManagementBackground
                             prog.Value = (int)totalDownloadedByte;
                         }
                         osize = st.Read(by, 0, by.Length);
-
-                        var percent = (float)totalDownloadedByte / (float)totalBytes * 100;
-                        label.Text = $@"当前补丁下载进度{percent}%";
+                        var percent = Convert.ToSingle(totalDownloadedByte) / Convert.ToSingle(totalBytes) * 100;
+                        label.Text = $@"下载进度{percent:F2}%";
                         Application.DoEvents(); //必须加注这句代码，否则label将因为循环执行太快而来不及显示信息
                     }
                 }
@@ -326,6 +381,15 @@ namespace LibraryManagementBackground
             catch (Exception ex)
             {
                 throw;
+            }
+            finally
+            {
+                if (prog != null)
+                {
+                    prog.Visible = false;
+                    prog.Value = 0;
+                }
+                label.Text = string.Empty;
             }
         }
     }

@@ -33,6 +33,8 @@ namespace LibraryManagementBackground
             this.tabMain = new System.Windows.Forms.TabControl();
             this.pageQueryStatistics = new System.Windows.Forms.TabPage();
             this.pageLabelSwitching = new System.Windows.Forms.TabPage();
+            this.lblLabelSwitchingBar = new System.Windows.Forms.Label();
+            this.prgLabelSwitching = new System.Windows.Forms.ProgressBar();
             this.grpLabelSwitchingGet = new System.Windows.Forms.GroupBox();
             this.rdoLabelSwitchingQueryOrderDesc = new System.Windows.Forms.RadioButton();
             this.rdoLabelSwitchingQueryOrderAsc = new System.Windows.Forms.RadioButton();
@@ -44,6 +46,7 @@ namespace LibraryManagementBackground
             this.lblInstrumentType = new System.Windows.Forms.Label();
             this.lblInstrumentName = new System.Windows.Forms.Label();
             this.grpLabelSwitchingSet = new System.Windows.Forms.GroupBox();
+            this.btnLabelSwitchingDownload = new System.Windows.Forms.Button();
             this.btnLabelSwitchingDelete = new System.Windows.Forms.Button();
             this.btnLabelSwitchingUpdate = new System.Windows.Forms.Button();
             this.btnLabelSwitchingImport = new System.Windows.Forms.Button();
@@ -57,7 +60,6 @@ namespace LibraryManagementBackground
             this.cnCreateDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUpdateDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pageMakingCard = new System.Windows.Forms.TabPage();
-            this.btnLabelSwitchingDownload = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.pageLabelSwitching.SuspendLayout();
             this.grpLabelSwitchingGet.SuspendLayout();
@@ -88,6 +90,8 @@ namespace LibraryManagementBackground
             // 
             // pageLabelSwitching
             // 
+            this.pageLabelSwitching.Controls.Add(this.lblLabelSwitchingBar);
+            this.pageLabelSwitching.Controls.Add(this.prgLabelSwitching);
             this.pageLabelSwitching.Controls.Add(this.grpLabelSwitchingGet);
             this.pageLabelSwitching.Controls.Add(this.grpLabelSwitchingSet);
             this.pageLabelSwitching.Controls.Add(this.lvwBook);
@@ -98,6 +102,22 @@ namespace LibraryManagementBackground
             this.pageLabelSwitching.TabIndex = 1;
             this.pageLabelSwitching.Text = "标签转换";
             this.pageLabelSwitching.UseVisualStyleBackColor = true;
+            // 
+            // lblLabelSwitchingBar
+            // 
+            this.lblLabelSwitchingBar.AutoSize = true;
+            this.lblLabelSwitchingBar.Location = new System.Drawing.Point(485, 507);
+            this.lblLabelSwitchingBar.Name = "lblLabelSwitchingBar";
+            this.lblLabelSwitchingBar.Size = new System.Drawing.Size(0, 12);
+            this.lblLabelSwitchingBar.TabIndex = 4;
+            // 
+            // prgLabelSwitching
+            // 
+            this.prgLabelSwitching.Location = new System.Drawing.Point(230, 501);
+            this.prgLabelSwitching.Name = "prgLabelSwitching";
+            this.prgLabelSwitching.Size = new System.Drawing.Size(568, 23);
+            this.prgLabelSwitching.TabIndex = 3;
+            this.prgLabelSwitching.Visible = false;
             // 
             // grpLabelSwitchingGet
             // 
@@ -217,6 +237,16 @@ namespace LibraryManagementBackground
             this.grpLabelSwitchingSet.TabStop = false;
             this.grpLabelSwitchingSet.Text = "设置";
             // 
+            // btnLabelSwitchingDownload
+            // 
+            this.btnLabelSwitchingDownload.Location = new System.Drawing.Point(168, 38);
+            this.btnLabelSwitchingDownload.Name = "btnLabelSwitchingDownload";
+            this.btnLabelSwitchingDownload.Size = new System.Drawing.Size(100, 23);
+            this.btnLabelSwitchingDownload.TabIndex = 4;
+            this.btnLabelSwitchingDownload.Text = "下载表格模板";
+            this.btnLabelSwitchingDownload.UseVisualStyleBackColor = true;
+            this.btnLabelSwitchingDownload.Click += new System.EventHandler(this.btnLabelSwitchingDownload_Click);
+            // 
             // btnLabelSwitchingDelete
             // 
             this.btnLabelSwitchingDelete.Location = new System.Drawing.Point(87, 68);
@@ -322,16 +352,6 @@ namespace LibraryManagementBackground
             this.pageMakingCard.Text = "开证办卡";
             this.pageMakingCard.UseVisualStyleBackColor = true;
             // 
-            // btnLabelSwitchingDownload
-            // 
-            this.btnLabelSwitchingDownload.Location = new System.Drawing.Point(168, 38);
-            this.btnLabelSwitchingDownload.Name = "btnLabelSwitchingDownload";
-            this.btnLabelSwitchingDownload.Size = new System.Drawing.Size(100, 23);
-            this.btnLabelSwitchingDownload.TabIndex = 4;
-            this.btnLabelSwitchingDownload.Text = "下载表格模板";
-            this.btnLabelSwitchingDownload.UseVisualStyleBackColor = true;
-            this.btnLabelSwitchingDownload.Click += new System.EventHandler(this.btnLabelSwitchingDownload_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -343,6 +363,7 @@ namespace LibraryManagementBackground
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.tabMain.ResumeLayout(false);
             this.pageLabelSwitching.ResumeLayout(false);
+            this.pageLabelSwitching.PerformLayout();
             this.grpLabelSwitchingGet.ResumeLayout(false);
             this.grpLabelSwitchingGet.PerformLayout();
             this.grpLabelSwitchingSet.ResumeLayout(false);
@@ -380,6 +401,8 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.Button btnLabelSwitchingUpdate;
         private System.Windows.Forms.ColumnHeader cnTagCode;
         private System.Windows.Forms.Button btnLabelSwitchingDownload;
+        private System.Windows.Forms.Label lblLabelSwitchingBar;
+        private System.Windows.Forms.ProgressBar prgLabelSwitching;
     }
 }
 
