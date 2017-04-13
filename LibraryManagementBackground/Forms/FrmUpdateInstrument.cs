@@ -21,13 +21,13 @@ namespace LibraryManagementBackground.Forms
         }
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            
-            var message = "操作成功！";
+
+            var message = Models.Message.SuccecssMessage;
             try
             {
                 using (var db = new MsSqlDbContext())
                 {
-                    var entity = db.Book.Single(x=>x.Id==_entity.Id);
+                    var entity = db.Book.Single(x => x.Id == _entity.Id);
                     entity.Tid = txtTagCode.Text;
                     entity.Name = txtName.Text;
                     entity.Author = txtType.Text;
@@ -38,8 +38,12 @@ namespace LibraryManagementBackground.Forms
             }
             catch (Exception ex)
             {
-                message = "操作失败！";
+                message = Models.Message.FailMessage;
+#if DEBUG
                 throw;
+#else
+
+#endif
             }
             Success?.Invoke(Name);
             MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);

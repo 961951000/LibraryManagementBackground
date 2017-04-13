@@ -169,6 +169,7 @@ namespace LibraryManagementBackground
         {
             try
             {
+                btnLabelSwitchingImport.Enabled = false;
                 var fileDialog = new OpenFileDialog
                 {
                     Multiselect = true,
@@ -179,6 +180,8 @@ namespace LibraryManagementBackground
                 {
                     var file = fileDialog.FileName;
                     var dt = GetExcel(file);
+                    prgLabelSwitchingImport.Visible = true;
+                    prgLabelSwitchingImport.Maximum = dt.Rows.Count;
                     using (var db = new MsSqlDbContext())
                     {
                         foreach (DataRow dr in dt.Rows)
@@ -197,18 +200,32 @@ namespace LibraryManagementBackground
                                 Updateby = 0
                             };
                             db.Book.Add(entity);
+                            prgLabelSwitchingImport.Value++;
+                            var percent = Convert.ToSingle(prgLabelSwitchingImport.Value) / Convert.ToSingle(dt.Rows.Count) * 100;
+                            lblLabelSwitchingImportProgress.Text = $@"导入进度{percent:F2}%";
+                            Application.DoEvents(); //必须加注这句代码，否则label将因为循环执行太快而来不及显示信息
                         }
                         db.SaveChanges();
                     }
                     btnLabelSwitchingQuery_Click(null, null);
-                    MessageBox.Show(@"操作成功！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(@"数据导入完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(@"操作失败！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
                 throw;
+#else
 
+#endif
+            }
+            finally
+            {
+                prgLabelSwitchingImport.Visible = false;
+                prgLabelSwitchingImport.Value = 0;
+                lblLabelSwitchingImportProgress.Text = string.Empty;
+                btnLabelSwitchingImport.Enabled = true;
             }
         }
         /// <summary>
@@ -230,14 +247,18 @@ namespace LibraryManagementBackground
                     var foldPath = dialog.SelectedPath;
                     var path = Path.GetFullPath(@"../../Resource/Tool/标签转换导入表格.xlsx");
                     var filename = Path.Combine(foldPath, Path.GetFileName(path));
-                    DownloadFile(path, filename, prgLabelSwitching, lblLabelSwitchingBar);
-                    MessageBox.Show(@"文件下载结束！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DownloadFile(path, filename, prgLabelSwitchingDownload, lblLabelSwitchingDownloadProgress);
+                    MessageBox.Show(@"文件下载完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(@"操作失败！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
                 throw;
+#else
+
+#endif
             }
             finally
             {
@@ -273,7 +294,11 @@ namespace LibraryManagementBackground
             }
             catch (Exception ex)
             {
+#if DEBUG
                 throw;
+#else
+
+#endif
             }
         }
         /// <summary>
@@ -283,7 +308,7 @@ namespace LibraryManagementBackground
         /// <param name="e"></param>
         private void btnLabelSwitchingDelete_Click(object sender, EventArgs e)
         {
-            var message = "操作成功！";
+            var message = Models.Message.SuccecssMessage;
             try
             {
                 if (lvwBook.SelectedIndices.Count > 0)
@@ -301,8 +326,12 @@ namespace LibraryManagementBackground
             }
             catch (Exception ex)
             {
-                message = "操作失败！";
+                message = Models.Message.FailMessage;
+#if DEBUG
                 throw;
+#else
+
+#endif
             }
             MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -338,16 +367,17 @@ namespace LibraryManagementBackground
         /// <param name="label">用于显示的进度条百分比</param> 
         private void DownloadFile(string path, string filename, ProgressBar prog, Label label)
         {
-            var request = (FileWebRequest)WebRequest.Create(path);
-            var response = (FileWebResponse)request.GetResponse();
-            var totalBytes = response.ContentLength;
-            if (totalBytes > int.MaxValue)
-            {
-                MessageBox.Show(@"下载文件大小超过限制");
-                return;
-            }
             try
             {
+                var request = (FileWebRequest)WebRequest.Create(path);
+                var response = (FileWebResponse)request.GetResponse();
+                var totalBytes = response.ContentLength;
+                if (totalBytes > int.MaxValue)
+                {
+                    MessageBox.Show(@"下载文件大小超过限制");
+                    return;
+                }
+
                 if (prog != null)
                 {
                     prog.Visible = true;
@@ -380,7 +410,11 @@ namespace LibraryManagementBackground
             }
             catch (Exception ex)
             {
+#if DEBUG
                 throw;
+#else
+
+#endif
             }
             finally
             {
