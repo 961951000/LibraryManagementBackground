@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using LibraryManagementBackground.DatabaseContext;
 using LibraryManagementBackground.Forms;
 using LibraryManagementBackground.Models;
+using LibraryManagementBackground.Util;
 
 namespace LibraryManagementBackground
 {
-    public partial class FrmMain : Form
+
+    public partial class FrmMain : Form, IMessageFilter
     {
         public FrmMain()
         {
@@ -28,12 +35,20 @@ namespace LibraryManagementBackground
             listView1.Columns["ProductName"].Width = -1;//根据内容设置宽度
             listView1.Columns["SN"].Width = -2;//根据标题设置宽度*/
             #endregion
+
+            Init();
             using (var db = new MsSqlDbContext())
             {
                 var books = db.Book.ToList();
                 var users = db.User.ToList();
                 var circulation = db.Circulation.ToList();
             }
+        }
+
+        private void Init()
+        {
+            lblLabelSwitchingProgress1.Text = string.Empty;
+            lblLabelSwitchingProgress2.Text = string.Empty;
         }
         void Success(string address)
         {
@@ -169,6 +184,8 @@ namespace LibraryManagementBackground
         {
             try
             {
+                Application.AddMessageFilter(this); //鼠标锁定
+                Cursor = Cursors.WaitCursor;
                 btnLabelSwitchingImport.Enabled = false;
                 var fileDialog = new OpenFileDialog
                 {
@@ -180,9 +197,59 @@ namespace LibraryManagementBackground
                 {
                     var file = fileDialog.FileName;
                     var dt = GetExcel(file);
-                    prgLabelSwitchingImport.Visible = true;
-                    prgLabelSwitchingImport.Maximum = dt.Rows.Count;
-                    using (var db = new MsSqlDbContext())
+                    ProgressBar prog;
+                    Label label;
+                    if (!prgLabelSwitching1.Visible)
+                    {
+                        prog = prgLabelSwitching1;
+                        label = lblLabelSwitchingProgress1;
+                    }
+                    else
+                    {
+                        prog = prgLabelSwitching2;
+                        label = lblLabelSwitchingProgress2;
+                    }
+                    LabelSwitchingImport(dt, prog, label);
+                    btnLabelSwitchingQuery_Click(null, null);
+                    MessageBox.Show(@"数据导入完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (OleDbException odex) when (odex.Message == "外部表不是预期的格式。")
+            {
+                MessageBox.Show($@"{Models.Message.FailMessage}{odex.Message}", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+            finally
+            {
+                btnLabelSwitchingImport.Enabled = true;
+                Application.RemoveMessageFilter(this);//鼠标解锁
+                Cursor = Cursors.Default;
+            }
+        }
+        /// <summary>
+        /// 标签转换-表格导入
+        /// </summary>
+        /// <param name="dt">数据表</param>
+        /// <param name="prog">用于显示的进度条</param>
+        /// <param name="label">用于显示的进度条百分比</param>
+        private void LabelSwitchingImport(DataTable dt, ProgressBar prog, Label label)
+        {
+            try
+            {
+                prog.Visible = true;
+                prog.Maximum = dt.Rows.Count;
+                using (var db = new MsSqlDbContext())
+                {
+                    var tran = db.Database.BeginTransaction();
+                    try
                     {
                         foreach (DataRow dr in dt.Rows)
                         {
@@ -199,33 +266,35 @@ namespace LibraryManagementBackground
                                 Createby = 0,
                                 Updateby = 0
                             };
-                            db.Book.Add(entity);
-                            prgLabelSwitchingImport.Value++;
-                            var percent = Convert.ToSingle(prgLabelSwitchingImport.Value) / Convert.ToSingle(dt.Rows.Count) * 100;
-                            lblLabelSwitchingImportProgress.Text = $@"导入进度{percent:F2}%";
+                            var item = ItemDetailBatch.BatchAdd(entity);
+                            db.Database.ExecuteSqlCommand(item.Key, item.Value.ToArray<object>());
+                            prog.Value++;
+                            var percent = Convert.ToSingle(prog.Value) / Convert.ToSingle(prog.Maximum) * 100;
+                            label.Text = $@"导入进度{percent:F2}%";
                             Application.DoEvents(); //必须加注这句代码，否则label将因为循环执行太快而来不及显示信息
                         }
-                        db.SaveChanges();
+                        tran.Commit();
                     }
-                    btnLabelSwitchingQuery_Click(null, null);
-                    MessageBox.Show(@"数据导入完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    catch (SqlException)
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #if DEBUG
                 throw;
 #else
-
+                Loger.Error(ex);
 #endif
             }
             finally
             {
-                prgLabelSwitchingImport.Visible = false;
-                prgLabelSwitchingImport.Value = 0;
-                lblLabelSwitchingImportProgress.Text = string.Empty;
-                btnLabelSwitchingImport.Enabled = true;
+                prog.Visible = false;
+                prog.Value = 0;
+                label.Text = string.Empty;
             }
         }
         /// <summary>
@@ -245,9 +314,21 @@ namespace LibraryManagementBackground
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var foldPath = dialog.SelectedPath;
-                    var path = Path.GetFullPath(@"../../Resource/Tool/标签转换导入表格.xlsx");
+                    var path = Path.GetFullPath(@"../../Resource/Tool/ubuntu-16.10-desktop-amd64.iso");
                     var filename = Path.Combine(foldPath, Path.GetFileName(path));
-                    DownloadFile(path, filename, prgLabelSwitchingDownload, lblLabelSwitchingDownloadProgress);
+                    ProgressBar prog;
+                    Label label;
+                    if (!prgLabelSwitching1.Visible)
+                    {
+                        prog = prgLabelSwitching1;
+                        label = lblLabelSwitchingProgress1;
+                    }
+                    else
+                    {
+                        prog = prgLabelSwitching2;
+                        label = lblLabelSwitchingProgress2;
+                    }
+                    DownloadFile(path, filename, prog, label);
                     MessageBox.Show(@"文件下载完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -257,7 +338,7 @@ namespace LibraryManagementBackground
 #if DEBUG
                 throw;
 #else
-
+                Loger.Error(ex);
 #endif
             }
             finally
@@ -297,7 +378,7 @@ namespace LibraryManagementBackground
 #if DEBUG
                 throw;
 #else
-
+                Loger.Error(ex);
 #endif
             }
         }
@@ -330,7 +411,7 @@ namespace LibraryManagementBackground
 #if DEBUG
                 throw;
 #else
-
+                Loger.Error(ex);
 #endif
             }
             MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -413,7 +494,7 @@ namespace LibraryManagementBackground
 #if DEBUG
                 throw;
 #else
-
+                Loger.Error(ex);
 #endif
             }
             finally
@@ -425,6 +506,15 @@ namespace LibraryManagementBackground
                 }
                 label.Text = string.Empty;
             }
+        }
+
+        public bool PreFilterMessage(ref System.Windows.Forms.Message m)
+        {
+            if (m.Msg >= 513 && m.Msg <= 515)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using LibraryManagementBackground.DatabaseContext;
 using LibraryManagementBackground.Models;
+using LibraryManagementBackground.Util;
 
 namespace LibraryManagementBackground.Forms
 {
@@ -47,7 +48,7 @@ namespace LibraryManagementBackground.Forms
 #if DEBUG
                 throw;
 #else
-
+                Loger.Error(ex);
 #endif
             }
             Success?.Invoke(Name);
