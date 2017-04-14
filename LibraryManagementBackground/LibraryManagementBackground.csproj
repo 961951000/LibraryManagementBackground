@@ -140,6 +140,7 @@
     <Compile Include="Util\Loger.cs" />
     <Compile Include="Util\OrmTool.cs" />
     <Compile Include="Util\RegexTool.cs" />
+    <Compile Include="ViewModels\CirculationView.cs" />
     <EmbeddedResource Include="Forms\FrmAddInstrument.resx">
       <DependentUpon>FrmAddInstrument.cs</DependentUpon>
     </EmbeddedResource>
@@ -180,6 +181,7 @@
     </Compile>
     <None Include="Resource\Tool\androiddata.zip" />
     <None Include="Resource\Tool\ubuntu-16.10-desktop-amd64.iso" />
+    <None Include="Resource\Tool\学生信息导入表格.xlsx" />
     <None Include="Resource\Tool\标签转换导入表格.xlsx" />
   </ItemGroup>
   <ItemGroup>

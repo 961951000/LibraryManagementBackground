@@ -21,21 +21,22 @@ namespace LibraryManagementBackground.Forms
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             var message = Models.Message.SuccecssMessage;
-            var entity = new TBook
-            {
-                Tid = txtTagCode.Text,
-                Name = txtName.Text,
-                Author = txtType.Text,
-                Createdate = DateTime.Now,
-                Updatedate = DateTime.Now,
-                Barcode = "默认",
-                Callcode = "默认",
-                Status = "默认",
-                Createby = 0,
-                Updateby = 0
-            };
             try
             {
+                var entity = new TBook
+                {
+                    Tid = txtTagCode.Text,
+                    Name = txtName.Text,
+                    Author = txtType.Text,
+                    Createdate = DateTime.Now,
+                    Updatedate = DateTime.Now,
+                    Barcode = "默认",
+                    Callcode = "默认",
+                    Status = "默认",
+                    Createby = 0,
+                    Updateby = 0
+                };
+
                 using (var db = new MsSqlDbContext())
                 {
                     db.Book.Add(entity);

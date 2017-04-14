@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using LibraryManagementBackground.DatabaseContext;
 using LibraryManagementBackground.Forms;
 using LibraryManagementBackground.Models;
 using LibraryManagementBackground.Util;
+using LibraryManagementBackground.ViewModels;
 
 namespace LibraryManagementBackground
 {
@@ -37,18 +34,31 @@ namespace LibraryManagementBackground
             #endregion
 
             Init();
-            using (var db = new MsSqlDbContext())
-            {
-                var books = db.Book.ToList();
-                var users = db.User.ToList();
-                var circulation = db.Circulation.ToList();
-            }
         }
 
         private void Init()
         {
             lblLabelSwitchingProgress1.Text = string.Empty;
             lblLabelSwitchingProgress2.Text = string.Empty;
+            lblUserProgress1.Text = string.Empty;
+            lblUserProgress2.Text = string.Empty;
+            cboCirculationOrder.SelectedIndex = 4;
+            cboLabelSwitchingQueryOrder.SelectedIndex = 2;
+            cboUserQueryOrder.SelectedIndex = 3;
+            dtpLendTimeStart.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01"));
+            dtpLendTimeEnd.Value = DateTime.Now;
+            try
+            {
+                QueryCirculation();
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
         }
         void Success(string address)
         {
@@ -56,34 +66,235 @@ namespace LibraryManagementBackground
             {
                 case "FrmAddInstrument":
                     {
-                        btnLabelSwitchingQuery_Click(null, null);
+                        LabelSwitchingQuery();
                     }
                     break;
                 case "FrmUpdateInstrument":
                     {
-                        btnLabelSwitchingQuery_Click(null, null);
+                        LabelSwitchingQuery();
+                    }
+                    break;
+                case "FrmAddUser":
+                    {
+                        UserQuery();
+                    }
+                    break;
+                case "FrmUpdateUser":
+                    {
+                        UserQuery();
                     }
                     break;
             }
         }
         private void tabMain_Selected(object sender, TabControlEventArgs e)
         {
-            if (e.TabPage == pageQueryStatistics)
+            try
             {
-                MessageBox.Show("查询统计");
+                if (e.TabPage == pageQueryStatistics)
+                {
+                    QueryCirculation();
+                }
+                else if (e.TabPage == pageLabelSwitching)
+                {
+
+                    LabelSwitchingQuery();
+                }
+                else if (e.TabPage == pageMakingCard)
+                {
+                    UserQuery();
+                }
             }
-            else if (e.TabPage == pageLabelSwitching)
+            catch (Exception ex)
             {
-                cboLabelSwitchingQueryOrder.SelectedIndex = 2;
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+        }
+        #region 查询统计
+
+        /// <summary>
+        /// 查询统计 - 查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnQueryCirculation_Click(object sender, EventArgs e)
+        {
+            QueryCirculation();
+        }
+        /// <summary>
+        /// 查询统计 - 查询
+        /// </summary>
+        private void QueryCirculation()
+        {
+            lvwCirculation.Items.Clear();
+            try
+            {
                 using (var db = new MsSqlDbContext())
                 {
-                    var books = db.Book.OrderByDescending(x => x.Createdate).ToList();
+                    const string sql = "SELECT d.Id,d.BookBarcode,d.PatronCode,d.LendTime,d.ReturnTime,e.Name AS 'BookName',e.Author,f.Name AS 'UserName',f.CardCode FROM (SELECT MAX (ID) AS 'Id',MAX (BookBarcode) AS 'BookBarcode',MAX (PatronCode) AS 'PatronCode',MAX (LendTime) AS 'LendTime',MIN (ReturnTime) AS 'ReturnTime' FROM (SELECT a.ID,a.BookBarcode,a.PatronCode,a.CirculationDate AS 'LendTime',b.CirculationDate AS 'ReturnTime' FROM (SELECT * FROM L_Circulation WHERE CirculationType = '1001') AS a LEFT JOIN (SELECT * FROM L_Circulation WHERE CirculationType = '1002') AS b ON b.BookBarcode = a.BookBarcode AND b.CirculationDate > a.CirculationDate) c GROUP BY ID) AS d LEFT JOIN T_Book AS e ON e.Barcode = d.BookBarcode LEFT JOIN T_User AS f ON f.PatronCode = d.PatronCode";
+                    var query = db.Database.SqlQuery<CirculationView>(sql).Where(x => x.LendTime >= DateTime.Parse(dtpLendTimeStart.Value.ToString("yyyy-MM-dd 00:00:00")) && x.LendTime < DateTime.Parse(dtpLendTimeEnd.Value.AddDays(1).ToString("yyyy-MM-dd 00:00:00")));
+                    var bookName = txtInstrumentNameGet.Text;
+                    var author = txtInstrumentTypeGet.Text;
+                    var userName = txtUserNameGet.Text;
+                    var patroncode = txtUserStudentGet.Text;
+                    if (!string.IsNullOrEmpty(bookName))
+                    {
+                        query = query.Where(x => x.BookName.Contains(bookName));
+                    }
+                    if (!string.IsNullOrEmpty(author))
+                    {
+                        query = query.Where(x => x.Author.Contains(author));
+                    }
+                    if (!string.IsNullOrEmpty(userName))
+                    {
+                        query = query.Where(x => x.UserName.Contains(userName));
+                    }
+                    if (!string.IsNullOrEmpty(patroncode))
+                    {
+                        query = query.Where(x => x.Patroncode.Contains(patroncode));
+                    }
+                    switch (cboCirculationOrder.SelectedIndex)
+                    {
+                        case 0:
+                            {
+                                query = rdoCirculationOrderAsc.Checked
+                                    ? query.OrderBy(x => x.BookName)
+                                    : query.OrderByDescending(x => x.BookName);
+                            }
+                            break;
+                        case 1:
+                            {
+                                query = rdoCirculationOrderAsc.Checked
+                                    ? query.OrderBy(x => x.Author)
+                                    : query.OrderByDescending(x => x.Author);
+                            }
+                            break;
+                        case 2:
+                            {
+                                query = rdoCirculationOrderAsc.Checked
+                                    ? query.OrderBy(x => x.UserName)
+                                    : query.OrderByDescending(x => x.UserName);
+                            }
+                            break;
+                        case 3:
+                            {
+                                query = rdoCirculationOrderAsc.Checked
+                                    ? query.OrderBy(x => x.Patroncode)
+                                    : query.OrderByDescending(x => x.Patroncode);
+                            }
+                            break;
+                        case 4:
+                            {
+                                query = rdoCirculationOrderAsc.Checked
+                                    ? query.OrderBy(x => x.LendTime)
+                                    : query.OrderByDescending(x => x.LendTime);
+                            }
+                            break;
+                        case 5:
+                            {
+                                query = rdoCirculationOrderAsc.Checked
+                                    ? query.OrderBy(x => x.ReturnTime)
+                                    : query.OrderByDescending(x => x.ReturnTime);
+                            }
+                            break;
+                    }
+                    var list = query.ToList();
+                    for (var i = 0; i < list.Count; i++)
+                    {
+                        var entity = list[i];
+                        var item = new ListViewItem
+                        {
+                            Text = entity.Id.ToString()
+                        };
+                        item.SubItems.Add((i + 1).ToString());
+                        item.SubItems.Add(entity.BookName);
+                        item.SubItems.Add(entity.Author);
+                        item.SubItems.Add(entity.UserName);
+                        item.SubItems.Add(entity.Patroncode);
+                        item.SubItems.Add(entity.LendTime.ToString());
+                        item.SubItems.Add(entity.ReturnTime.ToString());
+                        lvwCirculation.Items.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+        }
+        #endregion 查询统计
+        #region 标签转换
+        /// <summary>
+        /// 标签转换-查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnLabelSwitchingQuery_Click(object sender, EventArgs e)
+        {
+            LabelSwitchingQuery();
+        }
+        /// <summary>
+        /// 标签转换-查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LabelSwitchingQuery()
+        {
+            lvwBook.Items.Clear();
+            try
+            {
+                using (var db = new MsSqlDbContext())
+                {
+                    var instrumentName = txtInstrumentName.Text;
+                    var instrumentType = txtInstrumentType.Text;
+                    IQueryable<TBook> query = db.Book;
+                    if (!string.IsNullOrEmpty(instrumentName))
+                    {
+                        query = query.Where(x => x.Name.Contains(instrumentName));
+                    }
+                    if (!string.IsNullOrEmpty(instrumentType))
+                    {
+                        query = query.Where(x => x.Author.Contains(instrumentType));
+                    }
+                    switch (cboLabelSwitchingQueryOrder.SelectedIndex)
+                    {
+                        case 0:
+                            {
+                                query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                            }
+                            break;
+                        case 1:
+                            {
+                                query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Author) : query.OrderByDescending(x => x.Author);
+                            }
+                            break;
+                        case 2:
+                            {
+                                query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Createdate) : query.OrderByDescending(x => x.Createdate);
+                            }
+                            break;
+                        case 3:
+                            {
+                                query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Updatedate) : query.OrderByDescending(x => x.Updatedate);
+                            }
+                            break;
+                    }
+                    var books = query.ToList();
                     for (var i = 0; i < books.Count; i++)
                     {
                         var book = books[i];
-                        var item = new ListViewItem();
-                        item.SubItems.Clear();
-                        item.Text = book.Id.ToString();
+                        var item = new ListViewItem
+                        {
+                            Text = book.Id.ToString()
+                        };
                         item.SubItems.Add((i + 1).ToString());
                         item.SubItems.Add(book.Tid);
                         item.SubItems.Add(book.Name);
@@ -94,70 +305,14 @@ namespace LibraryManagementBackground
                     }
                 }
             }
-            else if (e.TabPage == pageMakingCard)
+            catch (Exception ex)
             {
-                MessageBox.Show("开证办卡");
-            }
-        }
-        /// <summary>
-        /// 标签转换-查询
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnLabelSwitchingQuery_Click(object sender, EventArgs e)
-        {
-            lvwBook.Items.Clear();
-            using (var db = new MsSqlDbContext())
-            {
-                var instrumentName = txtInstrumentName.Text;
-                var instrumentType = txtInstrumentType.Text;
-                IQueryable<TBook> query = db.Book;
-                if (!string.IsNullOrEmpty(instrumentName))
-                {
-                    query = query.Where(x => x.Name.Contains(instrumentName));
-                }
-                if (!string.IsNullOrEmpty(instrumentType))
-                {
-                    query = query.Where(x => x.Author.Contains(instrumentType));
-                }
-                switch (cboLabelSwitchingQueryOrder.SelectedIndex)
-                {
-                    case 0:
-                        {
-                            query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-                        }
-                        break;
-                    case 1:
-                        {
-                            query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Author) : query.OrderByDescending(x => x.Author);
-                        }
-                        break;
-                    case 2:
-                        {
-                            query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Createdate) : query.OrderByDescending(x => x.Createdate);
-                        }
-                        break;
-                    case 3:
-                        {
-                            query = rdoLabelSwitchingQueryOrderAsc.Checked ? query.OrderBy(x => x.Updatedate) : query.OrderByDescending(x => x.Updatedate);
-                        }
-                        break;
-                }
-                var books = query.ToList();
-                for (var i = 0; i < books.Count; i++)
-                {
-                    var book = books[i];
-                    var item = new ListViewItem();
-                    item.SubItems.Clear();
-                    item.Text = book.Id.ToString();
-                    item.SubItems.Add((i + 1).ToString());
-                    item.SubItems.Add(book.Tid);
-                    item.SubItems.Add(book.Name);
-                    item.SubItems.Add(book.Author);
-                    item.SubItems.Add(book.Createdate.ToString());
-                    item.SubItems.Add(book.Updatedate.ToString());
-                    lvwBook.Items.Add(item);
-                }
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
             }
         }
         /// <summary>
@@ -174,7 +329,6 @@ namespace LibraryManagementBackground
             form.Success += Success;
             form.ShowDialog();
         }
-
         /// <summary>
         /// 标签转换-表格导入
         /// </summary>
@@ -217,6 +371,11 @@ namespace LibraryManagementBackground
             catch (OleDbException odex) when (odex.Message == "外部表不是预期的格式。")
             {
                 MessageBox.Show($@"{Models.Message.FailMessage}{odex.Message}", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(odex);
+#endif
             }
             catch (Exception ex)
             {
@@ -282,14 +441,6 @@ namespace LibraryManagementBackground
                     }
                 }
             }
-            catch (Exception ex)
-            {
-#if DEBUG
-                throw;
-#else
-                Loger.Error(ex);
-#endif
-            }
             finally
             {
                 prog.Visible = false;
@@ -307,14 +458,14 @@ namespace LibraryManagementBackground
             btnLabelSwitchingDownload.Enabled = false;
             try
             {
-                var dialog = new FolderBrowserDialog()
+                var dialog = new FolderBrowserDialog
                 {
                     Description = @"请选择文件保存路径"
                 };
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var foldPath = dialog.SelectedPath;
-                    var path = Path.GetFullPath(@"../../Resource/Tool/ubuntu-16.10-desktop-amd64.iso");
+                    var path = Path.GetFullPath(@"../../Resource/Tool/标签转换导入表格.xlsx");
                     var filename = Path.Combine(foldPath, Path.GetFileName(path));
                     ProgressBar prog;
                     Label label;
@@ -334,7 +485,8 @@ namespace LibraryManagementBackground
             }
             catch (Exception ex)
             {
-                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var message = $"{Models.Message.FailMessage}执行回滚操作！";
+                MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #if DEBUG
                 throw;
 #else
@@ -375,6 +527,7 @@ namespace LibraryManagementBackground
             }
             catch (Exception ex)
             {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #if DEBUG
                 throw;
 #else
@@ -416,6 +569,353 @@ namespace LibraryManagementBackground
             }
             MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        #endregion 标签转换
+        #region 开证办卡
+        /// <summary>
+        /// 开证办卡-新增
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUserAdd_Click(object sender, EventArgs e)
+        {
+            var form = new FrmAddUser
+            {
+                StartPosition = FormStartPosition.CenterParent,
+            };
+            form.Success += Success;
+            form.ShowDialog();
+        }
+        /// <summary>
+        /// 开证办卡-表格导入
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUserImport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Application.AddMessageFilter(this); //鼠标锁定
+                Cursor = Cursors.WaitCursor;
+                btnUserImport.Enabled = false;
+                var fileDialog = new OpenFileDialog
+                {
+                    Multiselect = true,
+                    Title = @"请选择文件",
+                    Filter = @"所有文件(*.*)|*.*"
+                };
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var file = fileDialog.FileName;
+                    var dt = GetExcel(file);
+                    ProgressBar prog;
+                    Label label;
+                    if (!prgUser1.Visible)
+                    {
+                        prog = prgUser1;
+                        label = lblUserProgress1;
+                    }
+                    else
+                    {
+                        prog = prgUser2;
+                        label = lblUserProgress2;
+                    }
+                    UserImport(dt, prog, label);
+                    btnUserQuery_Click(null, null);
+                    MessageBox.Show(@"数据导入完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (OleDbException odex) when (odex.Message == "外部表不是预期的格式。")
+            {
+                MessageBox.Show($@"{Models.Message.FailMessage}{odex.Message}", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(odex);
+#endif
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+            finally
+            {
+                btnUserImport.Enabled = true;
+                Application.RemoveMessageFilter(this);//鼠标解锁
+                Cursor = Cursors.Default;
+            }
+        }
+        /// <summary>
+        /// 标签转换-表格导入
+        /// </summary>
+        /// <param name="dt">数据表</param>
+        /// <param name="prog">用于显示的进度条</param>
+        /// <param name="label">用于显示的进度条百分比</param>
+        private void UserImport(DataTable dt, ProgressBar prog, Label label)
+        {
+            try
+            {
+                prog.Visible = true;
+                prog.Maximum = dt.Rows.Count;
+                using (var db = new MsSqlDbContext())
+                {
+                    var tran = db.Database.BeginTransaction();
+                    try
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            var entity = new TUser
+                            {
+                                Cardcode = Convert.ToString(dr[0]),
+                                Patroncode = Convert.ToString(dr[1]),
+                                Name = Convert.ToString(dr[2]),
+                                Createdate = DateTime.Now,
+                                Updatedate = DateTime.Now,
+                                Createby = 0,
+                                Updateby = 0
+                            };
+                            var item = ItemDetailBatch.BatchAdd(entity);
+                            db.Database.ExecuteSqlCommand(item.Key, item.Value.ToArray<object>());
+                            prog.Value++;
+                            var percent = Convert.ToSingle(prog.Value) / Convert.ToSingle(prog.Maximum) * 100;
+                            label.Text = $@"导入进度{percent:F2}%";
+                            Application.DoEvents(); //必须加注这句代码，否则label将因为循环执行太快而来不及显示信息
+                        }
+                        tran.Commit();
+                    }
+                    catch (SqlException)
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
+            }
+            finally
+            {
+                prog.Visible = false;
+                prog.Value = 0;
+                label.Text = string.Empty;
+            }
+        }
+        /// <summary>
+        /// 开证办卡-下载表格模板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUserDownload_Click(object sender, EventArgs e)
+        {
+            btnUserDownload.Enabled = false;
+            try
+            {
+                var dialog = new FolderBrowserDialog
+                {
+                    Description = @"请选择文件保存路径"
+                };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var foldPath = dialog.SelectedPath;
+                    var path = Path.GetFullPath(@"../../Resource/Tool/ubuntu-16.10-desktop-amd64.iso");
+                    var filename = Path.Combine(foldPath, Path.GetFileName(path));
+                    ProgressBar prog;
+                    Label label;
+                    if (!prgUser1.Visible)
+                    {
+                        prog = prgUser1;
+                        label = lblUserProgress1;
+                    }
+                    else
+                    {
+                        prog = prgUser2;
+                        label = lblUserProgress2;
+                    }
+                    DownloadFile(path, filename, prog, label);
+                    MessageBox.Show(@"文件下载完成！", @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                var message = $"{Models.Message.FailMessage}执行回滚操作！";
+                MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+            finally
+            {
+                btnUserDownload.Enabled = true;
+            }
+        }
+        /// <summary>
+        /// 开证办卡-修改
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUserUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lvwUser.SelectedIndices.Count > 0)
+                {
+                    var items = lvwUser.FocusedItem.SubItems;
+                    var entity = new TUser()
+                    {
+                        Id = Convert.ToInt32(items[0].Text),
+                        Cardcode = items[2].Text,
+                        Patroncode = items[3].Text,
+                        Name = items[4].Text
+                    };
+                    var form = new FrmUpdateUser(entity)
+                    {
+                        StartPosition = FormStartPosition.CenterParent,
+                    };
+                    form.Success += Success;
+                    form.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+        }
+        /// <summary>
+        /// 开证办卡-删除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUserDelete_Click(object sender, EventArgs e)
+        {
+            var message = Models.Message.SuccecssMessage;
+            try
+            {
+                if (lvwUser.SelectedIndices.Count > 0)
+                {
+                    var items = lvwUser.FocusedItem.SubItems;
+                    using (var db = new MsSqlDbContext())
+                    {
+                        var id = Convert.ToInt32(items[0].Text);
+                        var entity = db.User.Single(x => x.Id == id);
+                        db.User.Remove(entity);
+                        db.SaveChanges();
+                    }
+                    btnUserQuery_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                message = Models.Message.FailMessage;
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+            MessageBox.Show(message, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        /// <summary>
+        /// 开证办卡-查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnUserQuery_Click(object sender, EventArgs e)
+        {
+            UserQuery();
+        }
+        /// <summary>
+        /// 开证办卡-查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UserQuery()
+        {
+            lvwUser.Items.Clear();
+            try
+            {
+                using (var db = new MsSqlDbContext())
+                {
+                    var userName = txtUserName.Text;
+                    var userCardCode = txtUserCardCode.Text;
+                    var userStudentCode = txtUserStudentCode.Text;
+                    IQueryable<TUser> query = db.User;
+                    if (!string.IsNullOrEmpty(userName))
+                    {
+                        query = query.Where(x => x.Name.Contains(userName));
+                    }
+                    if (!string.IsNullOrEmpty(userCardCode))
+                    {
+                        query = query.Where(x => x.Cardcode.Contains(userCardCode));
+                    }
+                    if (!string.IsNullOrEmpty(userStudentCode))
+                    {
+                        query = query.Where(x => x.Patroncode.Contains(userStudentCode));
+                    }
+                    switch (cboUserQueryOrder.SelectedIndex)
+                    {
+                        case 0:
+                            {
+                                query = rdoUserQueryOrderAsc.Checked ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                            }
+                            break;
+                        case 1:
+                            {
+                                query = rdoUserQueryOrderAsc.Checked ? query.OrderBy(x => x.Cardcode) : query.OrderByDescending(x => x.Cardcode);
+                            }
+                            break;
+                        case 2:
+                            {
+                                query = rdoUserQueryOrderAsc.Checked ? query.OrderBy(x => x.Patroncode) : query.OrderByDescending(x => x.Patroncode);
+                            }
+                            break;
+                        case 3:
+                            {
+                                query = rdoUserQueryOrderAsc.Checked ? query.OrderBy(x => x.Createdate) : query.OrderByDescending(x => x.Createdate);
+                            }
+                            break;
+                        case 4:
+                            {
+                                query = rdoUserQueryOrderAsc.Checked ? query.OrderBy(x => x.Updatedate) : query.OrderByDescending(x => x.Updatedate);
+                            }
+                            break;
+                    }
+                    var users = query.ToList();
+                    for (var i = 0; i < users.Count; i++)
+                    {
+                        var user = users[i];
+                        var item = new ListViewItem
+                        {
+                            Text = user.Id.ToString()
+                        };
+                        item.SubItems.Add((i + 1).ToString());
+                        item.SubItems.Add(user.Cardcode);
+                        item.SubItems.Add(user.Patroncode);
+                        item.SubItems.Add(user.Name);
+                        item.SubItems.Add(user.Createdate.ToString());
+                        item.SubItems.Add(user.Updatedate.ToString());
+                        lvwUser.Items.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
+        }
+        #endregion 开证办卡
         /// <summary>
         /// 加载Excel
         /// </summary>
@@ -458,7 +958,6 @@ namespace LibraryManagementBackground
                     MessageBox.Show(@"下载文件大小超过限制");
                     return;
                 }
-
                 if (prog != null)
                 {
                     prog.Visible = true;
@@ -489,14 +988,6 @@ namespace LibraryManagementBackground
                 so.Close();
                 st?.Close();
             }
-            catch (Exception ex)
-            {
-#if DEBUG
-                throw;
-#else
-                Loger.Error(ex);
-#endif
-            }
             finally
             {
                 if (prog != null)
@@ -507,7 +998,6 @@ namespace LibraryManagementBackground
                 label.Text = string.Empty;
             }
         }
-
         public bool PreFilterMessage(ref System.Windows.Forms.Message m)
         {
             if (m.Msg >= 513 && m.Msg <= 515)

@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LibraryManagementBackground.Models
 {
 	[Table("T_User")]
-	public class TUser
-	{
+	public class TUser : ItemDetails
+    {
 		#region Model
 		[Key, Column("id", Order = 0)]
 		public int? Id

@@ -32,6 +32,33 @@ namespace LibraryManagementBackground
         {
             this.tabMain = new System.Windows.Forms.TabControl();
             this.pageQueryStatistics = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtInstrumentNameGet = new System.Windows.Forms.TextBox();
+            this.rdoCirculationOrderDesc = new System.Windows.Forms.RadioButton();
+            this.rdoCirculationOrderAsc = new System.Windows.Forms.RadioButton();
+            this.lblCirculation = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cboCirculationOrder = new System.Windows.Forms.ComboBox();
+            this.btnQueryCirculation = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtInstrumentTypeGet = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dtpLendTimeEnd = new System.Windows.Forms.DateTimePicker();
+            this.txtUserNameGet = new System.Windows.Forms.TextBox();
+            this.dtpLendTimeStart = new System.Windows.Forms.DateTimePicker();
+            this.txtUserStudentGet = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lvwCirculation = new System.Windows.Forms.ListView();
+            this.cnCirculationId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnCirculationIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pageLabelSwitching = new System.Windows.Forms.TabPage();
             this.lblLabelSwitchingProgress1 = new System.Windows.Forms.Label();
             this.prgLabelSwitching1 = new System.Windows.Forms.ProgressBar();
@@ -62,41 +89,45 @@ namespace LibraryManagementBackground
             this.cnCreateDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUpdateDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pageMakingCard = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.progressBar2 = new System.Windows.Forms.ProgressBar();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lblUserProgress1 = new System.Windows.Forms.Label();
+            this.prgUser1 = new System.Windows.Forms.ProgressBar();
+            this.lblUserProgress2 = new System.Windows.Forms.Label();
+            this.prgUser2 = new System.Windows.Forms.ProgressBar();
+            this.grpUserGet = new System.Windows.Forms.GroupBox();
+            this.txtUserStudentCode = new System.Windows.Forms.TextBox();
+            this.lblUserStudentCode = new System.Windows.Forms.Label();
+            this.rdoUserQueryOrderDesc = new System.Windows.Forms.RadioButton();
+            this.rdoUserQueryOrderAsc = new System.Windows.Forms.RadioButton();
+            this.lblUserQueryOrde = new System.Windows.Forms.Label();
+            this.cboUserQueryOrder = new System.Windows.Forms.ComboBox();
+            this.btnUserQuery = new System.Windows.Forms.Button();
+            this.txtUserCardCode = new System.Windows.Forms.TextBox();
+            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.lblUserCardCode = new System.Windows.Forms.Label();
+            this.lblUserName = new System.Windows.Forms.Label();
+            this.grpUserSet = new System.Windows.Forms.GroupBox();
+            this.btnUserDownload = new System.Windows.Forms.Button();
+            this.btnUserDelete = new System.Windows.Forms.Button();
+            this.btnUserUpdate = new System.Windows.Forms.Button();
+            this.btnUserImport = new System.Windows.Forms.Button();
+            this.btnUserAdd = new System.Windows.Forms.Button();
+            this.lvwUser = new System.Windows.Forms.ListView();
+            this.cnUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnUserIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnUserCardCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnUserStudentCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnUserCreateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cnUserUpdateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabMain.SuspendLayout();
+            this.pageQueryStatistics.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.pageLabelSwitching.SuspendLayout();
             this.grpLabelSwitchingGet.SuspendLayout();
             this.grpLabelSwitchingSet.SuspendLayout();
             this.pageMakingCard.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.grpUserGet.SuspendLayout();
+            this.grpUserSet.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
@@ -113,6 +144,8 @@ namespace LibraryManagementBackground
             // 
             // pageQueryStatistics
             // 
+            this.pageQueryStatistics.Controls.Add(this.groupBox1);
+            this.pageQueryStatistics.Controls.Add(this.lvwCirculation);
             this.pageQueryStatistics.Location = new System.Drawing.Point(4, 22);
             this.pageQueryStatistics.Name = "pageQueryStatistics";
             this.pageQueryStatistics.Padding = new System.Windows.Forms.Padding(3);
@@ -120,6 +153,251 @@ namespace LibraryManagementBackground
             this.pageQueryStatistics.TabIndex = 0;
             this.pageQueryStatistics.Text = "查询统计";
             this.pageQueryStatistics.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.txtInstrumentNameGet);
+            this.groupBox1.Controls.Add(this.rdoCirculationOrderDesc);
+            this.groupBox1.Controls.Add(this.rdoCirculationOrderAsc);
+            this.groupBox1.Controls.Add(this.lblCirculation);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.cboCirculationOrder);
+            this.groupBox1.Controls.Add(this.btnQueryCirculation);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtInstrumentTypeGet);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.dtpLendTimeEnd);
+            this.groupBox1.Controls.Add(this.txtUserNameGet);
+            this.groupBox1.Controls.Add(this.dtpLendTimeStart);
+            this.groupBox1.Controls.Add(this.txtUserStudentGet);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Location = new System.Drawing.Point(25, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1013, 201);
+            this.groupBox1.TabIndex = 43;
+            this.groupBox1.TabStop = false;
+            // 
+            // txtInstrumentNameGet
+            // 
+            this.txtInstrumentNameGet.Location = new System.Drawing.Point(104, 58);
+            this.txtInstrumentNameGet.Name = "txtInstrumentNameGet";
+            this.txtInstrumentNameGet.Size = new System.Drawing.Size(100, 21);
+            this.txtInstrumentNameGet.TabIndex = 24;
+            // 
+            // rdoCirculationOrderDesc
+            // 
+            this.rdoCirculationOrderDesc.AutoSize = true;
+            this.rdoCirculationOrderDesc.Checked = true;
+            this.rdoCirculationOrderDesc.Location = new System.Drawing.Point(758, 114);
+            this.rdoCirculationOrderDesc.Name = "rdoCirculationOrderDesc";
+            this.rdoCirculationOrderDesc.Size = new System.Drawing.Size(47, 16);
+            this.rdoCirculationOrderDesc.TabIndex = 30;
+            this.rdoCirculationOrderDesc.TabStop = true;
+            this.rdoCirculationOrderDesc.Text = "倒序";
+            this.rdoCirculationOrderDesc.UseVisualStyleBackColor = true;
+            // 
+            // rdoCirculationOrderAsc
+            // 
+            this.rdoCirculationOrderAsc.AutoSize = true;
+            this.rdoCirculationOrderAsc.Location = new System.Drawing.Point(692, 114);
+            this.rdoCirculationOrderAsc.Name = "rdoCirculationOrderAsc";
+            this.rdoCirculationOrderAsc.Size = new System.Drawing.Size(47, 16);
+            this.rdoCirculationOrderAsc.TabIndex = 29;
+            this.rdoCirculationOrderAsc.Text = "正序";
+            this.rdoCirculationOrderAsc.UseVisualStyleBackColor = true;
+            // 
+            // lblCirculation
+            // 
+            this.lblCirculation.AutoSize = true;
+            this.lblCirculation.Location = new System.Drawing.Point(468, 116);
+            this.lblCirculation.Name = "lblCirculation";
+            this.lblCirculation.Size = new System.Drawing.Size(65, 12);
+            this.lblCirculation.TabIndex = 28;
+            this.lblCirculation.Text = "排    序：";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(33, 64);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 12);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "仪器名称：";
+            // 
+            // cboCirculationOrder
+            // 
+            this.cboCirculationOrder.FormattingEnabled = true;
+            this.cboCirculationOrder.Items.AddRange(new object[] {
+            "仪器名称",
+            "仪器型号",
+            "学生姓名",
+            "学 籍 号",
+            "借出时间",
+            "归还时间"});
+            this.cboCirculationOrder.Location = new System.Drawing.Point(552, 113);
+            this.cboCirculationOrder.Name = "cboCirculationOrder";
+            this.cboCirculationOrder.Size = new System.Drawing.Size(121, 20);
+            this.cboCirculationOrder.TabIndex = 27;
+            // 
+            // btnQueryCirculation
+            // 
+            this.btnQueryCirculation.Location = new System.Drawing.Point(864, 108);
+            this.btnQueryCirculation.Name = "btnQueryCirculation";
+            this.btnQueryCirculation.Size = new System.Drawing.Size(75, 23);
+            this.btnQueryCirculation.TabIndex = 26;
+            this.btnQueryCirculation.Text = "开始查询";
+            this.btnQueryCirculation.UseVisualStyleBackColor = true;
+            this.btnQueryCirculation.Click += new System.EventHandler(this.btnQueryCirculation_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(33, 116);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(65, 12);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "仪器型号：";
+            // 
+            // txtInstrumentTypeGet
+            // 
+            this.txtInstrumentTypeGet.Location = new System.Drawing.Point(104, 110);
+            this.txtInstrumentTypeGet.Name = "txtInstrumentTypeGet";
+            this.txtInstrumentTypeGet.Size = new System.Drawing.Size(100, 21);
+            this.txtInstrumentTypeGet.TabIndex = 25;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(233, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 31;
+            this.label2.Text = "学生姓名：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(743, 61);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(23, 12);
+            this.label4.TabIndex = 38;
+            this.label4.Text = " - ";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(233, 113);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 32;
+            this.label1.Text = "学 籍 号：";
+            // 
+            // dtpLendTimeEnd
+            // 
+            this.dtpLendTimeEnd.Location = new System.Drawing.Point(772, 58);
+            this.dtpLendTimeEnd.Name = "dtpLendTimeEnd";
+            this.dtpLendTimeEnd.Size = new System.Drawing.Size(200, 21);
+            this.dtpLendTimeEnd.TabIndex = 37;
+            // 
+            // txtUserNameGet
+            // 
+            this.txtUserNameGet.Location = new System.Drawing.Point(304, 58);
+            this.txtUserNameGet.Name = "txtUserNameGet";
+            this.txtUserNameGet.Size = new System.Drawing.Size(100, 21);
+            this.txtUserNameGet.TabIndex = 33;
+            // 
+            // dtpLendTimeStart
+            // 
+            this.dtpLendTimeStart.Location = new System.Drawing.Point(537, 58);
+            this.dtpLendTimeStart.Name = "dtpLendTimeStart";
+            this.dtpLendTimeStart.Size = new System.Drawing.Size(200, 21);
+            this.dtpLendTimeStart.TabIndex = 36;
+            // 
+            // txtUserStudentGet
+            // 
+            this.txtUserStudentGet.Location = new System.Drawing.Point(304, 110);
+            this.txtUserStudentGet.Name = "txtUserStudentGet";
+            this.txtUserStudentGet.Size = new System.Drawing.Size(100, 21);
+            this.txtUserStudentGet.TabIndex = 34;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(466, 64);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 35;
+            this.label3.Text = "借出时间：";
+            // 
+            // lvwCirculation
+            // 
+            this.lvwCirculation.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.lvwCirculation.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cnCirculationId,
+            this.cnCirculationIndex,
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12,
+            this.columnHeader13,
+            this.columnHeader14,
+            this.columnHeader15});
+            this.lvwCirculation.FullRowSelect = true;
+            this.lvwCirculation.GridLines = true;
+            this.lvwCirculation.Location = new System.Drawing.Point(25, 213);
+            this.lvwCirculation.Name = "lvwCirculation";
+            this.lvwCirculation.Size = new System.Drawing.Size(1013, 369);
+            this.lvwCirculation.TabIndex = 14;
+            this.lvwCirculation.UseCompatibleStateImageBehavior = false;
+            this.lvwCirculation.View = System.Windows.Forms.View.Details;
+            // 
+            // cnCirculationId
+            // 
+            this.cnCirculationId.Text = "编号";
+            this.cnCirculationId.Width = 0;
+            // 
+            // cnCirculationIndex
+            // 
+            this.cnCirculationIndex.Text = "序号";
+            this.cnCirculationIndex.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cnCirculationIndex.Width = 50;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "仪器名称";
+            this.columnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader10.Width = 160;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "仪器型号";
+            this.columnHeader11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader11.Width = 160;
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "学生姓名";
+            this.columnHeader12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader12.Width = 160;
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "学籍号";
+            this.columnHeader13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader13.Width = 160;
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "借出时间";
+            this.columnHeader14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader14.Width = 160;
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "归还时间";
+            this.columnHeader15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader15.Width = 160;
             // 
             // pageLabelSwitching
             // 
@@ -183,7 +461,7 @@ namespace LibraryManagementBackground
             this.grpLabelSwitchingGet.Controls.Add(this.txtInstrumentName);
             this.grpLabelSwitchingGet.Controls.Add(this.lblInstrumentType);
             this.grpLabelSwitchingGet.Controls.Add(this.lblInstrumentName);
-            this.grpLabelSwitchingGet.Location = new System.Drawing.Point(487, 26);
+            this.grpLabelSwitchingGet.Location = new System.Drawing.Point(610, 26);
             this.grpLabelSwitchingGet.Name = "grpLabelSwitchingGet";
             this.grpLabelSwitchingGet.Size = new System.Drawing.Size(450, 150);
             this.grpLabelSwitchingGet.TabIndex = 2;
@@ -292,7 +570,7 @@ namespace LibraryManagementBackground
             // 
             // btnLabelSwitchingDownload
             // 
-            this.btnLabelSwitchingDownload.Location = new System.Drawing.Point(168, 38);
+            this.btnLabelSwitchingDownload.Location = new System.Drawing.Point(241, 56);
             this.btnLabelSwitchingDownload.Name = "btnLabelSwitchingDownload";
             this.btnLabelSwitchingDownload.Size = new System.Drawing.Size(100, 23);
             this.btnLabelSwitchingDownload.TabIndex = 4;
@@ -302,7 +580,7 @@ namespace LibraryManagementBackground
             // 
             // btnLabelSwitchingDelete
             // 
-            this.btnLabelSwitchingDelete.Location = new System.Drawing.Point(87, 68);
+            this.btnLabelSwitchingDelete.Location = new System.Drawing.Point(160, 86);
             this.btnLabelSwitchingDelete.Name = "btnLabelSwitchingDelete";
             this.btnLabelSwitchingDelete.Size = new System.Drawing.Size(75, 23);
             this.btnLabelSwitchingDelete.TabIndex = 3;
@@ -312,7 +590,7 @@ namespace LibraryManagementBackground
             // 
             // btnLabelSwitchingUpdate
             // 
-            this.btnLabelSwitchingUpdate.Location = new System.Drawing.Point(7, 68);
+            this.btnLabelSwitchingUpdate.Location = new System.Drawing.Point(80, 86);
             this.btnLabelSwitchingUpdate.Name = "btnLabelSwitchingUpdate";
             this.btnLabelSwitchingUpdate.Size = new System.Drawing.Size(75, 23);
             this.btnLabelSwitchingUpdate.TabIndex = 2;
@@ -322,7 +600,7 @@ namespace LibraryManagementBackground
             // 
             // btnLabelSwitchingImport
             // 
-            this.btnLabelSwitchingImport.Location = new System.Drawing.Point(87, 38);
+            this.btnLabelSwitchingImport.Location = new System.Drawing.Point(160, 56);
             this.btnLabelSwitchingImport.Name = "btnLabelSwitchingImport";
             this.btnLabelSwitchingImport.Size = new System.Drawing.Size(75, 23);
             this.btnLabelSwitchingImport.TabIndex = 1;
@@ -332,7 +610,7 @@ namespace LibraryManagementBackground
             // 
             // btnLabelSwitchingAdd
             // 
-            this.btnLabelSwitchingAdd.Location = new System.Drawing.Point(6, 38);
+            this.btnLabelSwitchingAdd.Location = new System.Drawing.Point(79, 56);
             this.btnLabelSwitchingAdd.Name = "btnLabelSwitchingAdd";
             this.btnLabelSwitchingAdd.Size = new System.Drawing.Size(75, 23);
             this.btnLabelSwitchingAdd.TabIndex = 0;
@@ -397,13 +675,13 @@ namespace LibraryManagementBackground
             // 
             // pageMakingCard
             // 
-            this.pageMakingCard.Controls.Add(this.label1);
-            this.pageMakingCard.Controls.Add(this.progressBar1);
-            this.pageMakingCard.Controls.Add(this.label2);
-            this.pageMakingCard.Controls.Add(this.progressBar2);
-            this.pageMakingCard.Controls.Add(this.groupBox1);
-            this.pageMakingCard.Controls.Add(this.groupBox2);
-            this.pageMakingCard.Controls.Add(this.listView1);
+            this.pageMakingCard.Controls.Add(this.lblUserProgress1);
+            this.pageMakingCard.Controls.Add(this.prgUser1);
+            this.pageMakingCard.Controls.Add(this.lblUserProgress2);
+            this.pageMakingCard.Controls.Add(this.prgUser2);
+            this.pageMakingCard.Controls.Add(this.grpUserGet);
+            this.pageMakingCard.Controls.Add(this.grpUserSet);
+            this.pageMakingCard.Controls.Add(this.lvwUser);
             this.pageMakingCard.Location = new System.Drawing.Point(4, 22);
             this.pageMakingCard.Name = "pageMakingCard";
             this.pageMakingCard.Padding = new System.Windows.Forms.Padding(3);
@@ -412,256 +690,281 @@ namespace LibraryManagementBackground
             this.pageMakingCard.Text = "开证办卡";
             this.pageMakingCard.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblUserProgress1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(506, 502);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "label1";
+            this.lblUserProgress1.AutoSize = true;
+            this.lblUserProgress1.Location = new System.Drawing.Point(506, 502);
+            this.lblUserProgress1.Name = "lblUserProgress1";
+            this.lblUserProgress1.Size = new System.Drawing.Size(101, 12);
+            this.lblUserProgress1.TabIndex = 13;
+            this.lblUserProgress1.Text = "lblUserProgress1";
             // 
-            // progressBar1
+            // prgUser1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(236, 497);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(600, 23);
-            this.progressBar1.TabIndex = 12;
-            this.progressBar1.Visible = false;
+            this.prgUser1.Location = new System.Drawing.Point(236, 497);
+            this.prgUser1.Name = "prgUser1";
+            this.prgUser1.Size = new System.Drawing.Size(600, 23);
+            this.prgUser1.TabIndex = 12;
+            this.prgUser1.Visible = false;
             // 
-            // label2
+            // lblUserProgress2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(506, 548);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "label2";
+            this.lblUserProgress2.AutoSize = true;
+            this.lblUserProgress2.Location = new System.Drawing.Point(506, 548);
+            this.lblUserProgress2.Name = "lblUserProgress2";
+            this.lblUserProgress2.Size = new System.Drawing.Size(101, 12);
+            this.lblUserProgress2.TabIndex = 11;
+            this.lblUserProgress2.Text = "lblUserProgress2";
             // 
-            // progressBar2
+            // prgUser2
             // 
-            this.progressBar2.Location = new System.Drawing.Point(236, 542);
-            this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(600, 23);
-            this.progressBar2.TabIndex = 10;
-            this.progressBar2.Visible = false;
+            this.prgUser2.Location = new System.Drawing.Point(236, 542);
+            this.prgUser2.Name = "prgUser2";
+            this.prgUser2.Size = new System.Drawing.Size(600, 23);
+            this.prgUser2.TabIndex = 10;
+            this.prgUser2.Visible = false;
             // 
-            // groupBox1
+            // grpUserGet
             // 
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(493, 23);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(450, 150);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "查询";
+            this.grpUserGet.Controls.Add(this.txtUserStudentCode);
+            this.grpUserGet.Controls.Add(this.lblUserStudentCode);
+            this.grpUserGet.Controls.Add(this.rdoUserQueryOrderDesc);
+            this.grpUserGet.Controls.Add(this.rdoUserQueryOrderAsc);
+            this.grpUserGet.Controls.Add(this.lblUserQueryOrde);
+            this.grpUserGet.Controls.Add(this.cboUserQueryOrder);
+            this.grpUserGet.Controls.Add(this.btnUserQuery);
+            this.grpUserGet.Controls.Add(this.txtUserCardCode);
+            this.grpUserGet.Controls.Add(this.txtUserName);
+            this.grpUserGet.Controls.Add(this.lblUserCardCode);
+            this.grpUserGet.Controls.Add(this.lblUserName);
+            this.grpUserGet.Location = new System.Drawing.Point(616, 23);
+            this.grpUserGet.Name = "grpUserGet";
+            this.grpUserGet.Size = new System.Drawing.Size(450, 150);
+            this.grpUserGet.TabIndex = 9;
+            this.grpUserGet.TabStop = false;
+            this.grpUserGet.Text = "查询";
             // 
-            // radioButton1
+            // txtUserStudentCode
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(367, 87);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(47, 16);
-            this.radioButton1.TabIndex = 8;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "倒序";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.txtUserStudentCode.Location = new System.Drawing.Point(132, 76);
+            this.txtUserStudentCode.Name = "txtUserStudentCode";
+            this.txtUserStudentCode.Size = new System.Drawing.Size(100, 21);
+            this.txtUserStudentCode.TabIndex = 10;
             // 
-            // radioButton2
+            // lblUserStudentCode
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(287, 87);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(47, 16);
-            this.radioButton2.TabIndex = 7;
-            this.radioButton2.Text = "正序";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.lblUserStudentCode.AutoSize = true;
+            this.lblUserStudentCode.Location = new System.Drawing.Point(61, 79);
+            this.lblUserStudentCode.Name = "lblUserStudentCode";
+            this.lblUserStudentCode.Size = new System.Drawing.Size(65, 12);
+            this.lblUserStudentCode.TabIndex = 9;
+            this.lblUserStudentCode.Text = "学 籍 号：";
             // 
-            // label3
+            // rdoUserQueryOrderDesc
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(61, 91);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "排    序：";
+            this.rdoUserQueryOrderDesc.AutoSize = true;
+            this.rdoUserQueryOrderDesc.Checked = true;
+            this.rdoUserQueryOrderDesc.Location = new System.Drawing.Point(367, 104);
+            this.rdoUserQueryOrderDesc.Name = "rdoUserQueryOrderDesc";
+            this.rdoUserQueryOrderDesc.Size = new System.Drawing.Size(47, 16);
+            this.rdoUserQueryOrderDesc.TabIndex = 8;
+            this.rdoUserQueryOrderDesc.TabStop = true;
+            this.rdoUserQueryOrderDesc.Text = "倒序";
+            this.rdoUserQueryOrderDesc.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // rdoUserQueryOrderAsc
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "仪器名称",
-            "仪器型号",
+            this.rdoUserQueryOrderAsc.AutoSize = true;
+            this.rdoUserQueryOrderAsc.Location = new System.Drawing.Point(287, 104);
+            this.rdoUserQueryOrderAsc.Name = "rdoUserQueryOrderAsc";
+            this.rdoUserQueryOrderAsc.Size = new System.Drawing.Size(47, 16);
+            this.rdoUserQueryOrderAsc.TabIndex = 7;
+            this.rdoUserQueryOrderAsc.Text = "正序";
+            this.rdoUserQueryOrderAsc.UseVisualStyleBackColor = true;
+            // 
+            // lblUserQueryOrde
+            // 
+            this.lblUserQueryOrde.AutoSize = true;
+            this.lblUserQueryOrde.Location = new System.Drawing.Point(61, 108);
+            this.lblUserQueryOrde.Name = "lblUserQueryOrde";
+            this.lblUserQueryOrde.Size = new System.Drawing.Size(65, 12);
+            this.lblUserQueryOrde.TabIndex = 6;
+            this.lblUserQueryOrde.Text = "排    序：";
+            // 
+            // cboUserQueryOrder
+            // 
+            this.cboUserQueryOrder.FormattingEnabled = true;
+            this.cboUserQueryOrder.Items.AddRange(new object[] {
+            "学生姓名",
+            "卡    号",
+            "学 籍 号",
             "入库时间",
             "修改时间"});
-            this.comboBox1.Location = new System.Drawing.Point(132, 86);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 5;
+            this.cboUserQueryOrder.Location = new System.Drawing.Point(132, 103);
+            this.cboUserQueryOrder.Name = "cboUserQueryOrder";
+            this.cboUserQueryOrder.Size = new System.Drawing.Size(121, 20);
+            this.cboUserQueryOrder.TabIndex = 5;
             // 
-            // button1
+            // btnUserQuery
             // 
-            this.button1.Location = new System.Drawing.Point(287, 121);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "开始查询";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnUserQuery.Location = new System.Drawing.Point(287, 121);
+            this.btnUserQuery.Name = "btnUserQuery";
+            this.btnUserQuery.Size = new System.Drawing.Size(75, 23);
+            this.btnUserQuery.TabIndex = 4;
+            this.btnUserQuery.Text = "开始查询";
+            this.btnUserQuery.UseVisualStyleBackColor = true;
+            this.btnUserQuery.Click += new System.EventHandler(this.btnUserQuery_Click);
             // 
-            // textBox1
+            // txtUserCardCode
             // 
-            this.textBox1.Location = new System.Drawing.Point(132, 58);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
-            this.textBox1.TabIndex = 3;
+            this.txtUserCardCode.Location = new System.Drawing.Point(132, 46);
+            this.txtUserCardCode.Name = "txtUserCardCode";
+            this.txtUserCardCode.Size = new System.Drawing.Size(100, 21);
+            this.txtUserCardCode.TabIndex = 3;
             // 
-            // textBox2
+            // txtUserName
             // 
-            this.textBox2.Location = new System.Drawing.Point(132, 26);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 2;
+            this.txtUserName.Location = new System.Drawing.Point(132, 14);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(100, 21);
+            this.txtUserName.TabIndex = 2;
             // 
-            // label4
+            // lblUserCardCode
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(61, 61);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 12);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "仪器型号：";
+            this.lblUserCardCode.AutoSize = true;
+            this.lblUserCardCode.Location = new System.Drawing.Point(61, 49);
+            this.lblUserCardCode.Name = "lblUserCardCode";
+            this.lblUserCardCode.Size = new System.Drawing.Size(65, 12);
+            this.lblUserCardCode.TabIndex = 1;
+            this.lblUserCardCode.Text = "卡    号：";
             // 
-            // label5
+            // lblUserName
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(61, 29);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 12);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "仪器名称：";
+            this.lblUserName.AutoSize = true;
+            this.lblUserName.Location = new System.Drawing.Point(61, 17);
+            this.lblUserName.Name = "lblUserName";
+            this.lblUserName.Size = new System.Drawing.Size(65, 12);
+            this.lblUserName.TabIndex = 0;
+            this.lblUserName.Text = "学生姓名：";
             // 
-            // groupBox2
+            // grpUserSet
             // 
-            this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button6);
-            this.groupBox2.Location = new System.Drawing.Point(12, 23);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 150);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "设置";
+            this.grpUserSet.Controls.Add(this.btnUserDownload);
+            this.grpUserSet.Controls.Add(this.btnUserDelete);
+            this.grpUserSet.Controls.Add(this.btnUserUpdate);
+            this.grpUserSet.Controls.Add(this.btnUserImport);
+            this.grpUserSet.Controls.Add(this.btnUserAdd);
+            this.grpUserSet.Location = new System.Drawing.Point(12, 23);
+            this.grpUserSet.Name = "grpUserSet";
+            this.grpUserSet.Size = new System.Drawing.Size(450, 150);
+            this.grpUserSet.TabIndex = 8;
+            this.grpUserSet.TabStop = false;
+            this.grpUserSet.Text = "设置";
             // 
-            // button2
+            // btnUserDownload
             // 
-            this.button2.Location = new System.Drawing.Point(168, 38);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "下载表格模板";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnUserDownload.Location = new System.Drawing.Point(235, 59);
+            this.btnUserDownload.Name = "btnUserDownload";
+            this.btnUserDownload.Size = new System.Drawing.Size(100, 23);
+            this.btnUserDownload.TabIndex = 4;
+            this.btnUserDownload.Text = "下载表格模板";
+            this.btnUserDownload.UseVisualStyleBackColor = true;
+            this.btnUserDownload.Click += new System.EventHandler(this.btnUserDownload_Click);
             // 
-            // button3
+            // btnUserDelete
             // 
-            this.button3.Location = new System.Drawing.Point(87, 68);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "删除";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnUserDelete.Location = new System.Drawing.Point(154, 89);
+            this.btnUserDelete.Name = "btnUserDelete";
+            this.btnUserDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnUserDelete.TabIndex = 3;
+            this.btnUserDelete.Text = "删除";
+            this.btnUserDelete.UseVisualStyleBackColor = true;
+            this.btnUserDelete.Click += new System.EventHandler(this.btnUserDelete_Click);
             // 
-            // button4
+            // btnUserUpdate
             // 
-            this.button4.Location = new System.Drawing.Point(7, 68);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "修改";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnUserUpdate.Location = new System.Drawing.Point(74, 89);
+            this.btnUserUpdate.Name = "btnUserUpdate";
+            this.btnUserUpdate.Size = new System.Drawing.Size(75, 23);
+            this.btnUserUpdate.TabIndex = 2;
+            this.btnUserUpdate.Text = "修改";
+            this.btnUserUpdate.UseVisualStyleBackColor = true;
+            this.btnUserUpdate.Click += new System.EventHandler(this.btnUserUpdate_Click);
             // 
-            // button5
+            // btnUserImport
             // 
-            this.button5.Location = new System.Drawing.Point(87, 38);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 1;
-            this.button5.Text = "表格导入";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnUserImport.Location = new System.Drawing.Point(154, 59);
+            this.btnUserImport.Name = "btnUserImport";
+            this.btnUserImport.Size = new System.Drawing.Size(75, 23);
+            this.btnUserImport.TabIndex = 1;
+            this.btnUserImport.Text = "表格导入";
+            this.btnUserImport.UseVisualStyleBackColor = true;
+            this.btnUserImport.Click += new System.EventHandler(this.btnUserImport_Click);
             // 
-            // button6
+            // btnUserAdd
             // 
-            this.button6.Location = new System.Drawing.Point(6, 38);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 0;
-            this.button6.Text = "新增";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnUserAdd.Location = new System.Drawing.Point(73, 59);
+            this.btnUserAdd.Name = "btnUserAdd";
+            this.btnUserAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnUserAdd.TabIndex = 0;
+            this.btnUserAdd.Text = "新增";
+            this.btnUserAdd.UseVisualStyleBackColor = true;
+            this.btnUserAdd.Click += new System.EventHandler(this.btnUserAdd_Click);
             // 
-            // listView1
+            // lvwUser
             // 
-            this.listView1.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7});
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(12, 190);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1054, 301);
-            this.listView1.TabIndex = 7;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lvwUser.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.lvwUser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cnUserId,
+            this.cnUserIndex,
+            this.cnUserCardCode,
+            this.cnUserStudentCode,
+            this.cnUserName,
+            this.cnUserCreateTime,
+            this.cnUserUpdateTime});
+            this.lvwUser.FullRowSelect = true;
+            this.lvwUser.GridLines = true;
+            this.lvwUser.Location = new System.Drawing.Point(12, 190);
+            this.lvwUser.Name = "lvwUser";
+            this.lvwUser.Size = new System.Drawing.Size(1054, 301);
+            this.lvwUser.TabIndex = 7;
+            this.lvwUser.UseCompatibleStateImageBehavior = false;
+            this.lvwUser.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // cnUserId
             // 
-            this.columnHeader1.Text = "编号";
-            this.columnHeader1.Width = 0;
+            this.cnUserId.Text = "编号";
+            this.cnUserId.Width = 0;
             // 
-            // columnHeader2
+            // cnUserIndex
             // 
-            this.columnHeader2.Text = "序号";
-            this.columnHeader2.Width = 50;
+            this.cnUserIndex.Text = "序号";
+            this.cnUserIndex.Width = 50;
             // 
-            // columnHeader3
+            // cnUserCardCode
             // 
-            this.columnHeader3.Text = "电子标签";
-            this.columnHeader3.Width = 200;
+            this.cnUserCardCode.Text = "卡号";
+            this.cnUserCardCode.Width = 200;
             // 
-            // columnHeader4
+            // cnUserStudentCode
             // 
-            this.columnHeader4.Text = "仪器名称";
-            this.columnHeader4.Width = 200;
+            this.cnUserStudentCode.Text = "学籍号";
+            this.cnUserStudentCode.Width = 200;
             // 
-            // columnHeader5
+            // cnUserName
             // 
-            this.columnHeader5.Text = "仪器型号";
-            this.columnHeader5.Width = 200;
+            this.cnUserName.Text = "学生姓名";
+            this.cnUserName.Width = 200;
             // 
-            // columnHeader6
+            // cnUserCreateTime
             // 
-            this.columnHeader6.Text = "入库时间";
-            this.columnHeader6.Width = 200;
+            this.cnUserCreateTime.Text = "创建时间";
+            this.cnUserCreateTime.Width = 200;
             // 
-            // columnHeader7
+            // cnUserUpdateTime
             // 
-            this.columnHeader7.Text = "修改时间";
-            this.columnHeader7.Width = 200;
+            this.cnUserUpdateTime.Text = "修改时间";
+            this.cnUserUpdateTime.Width = 200;
             // 
             // FrmMain
             // 
@@ -673,6 +976,9 @@ namespace LibraryManagementBackground
             this.Text = "图书馆管理后台";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.tabMain.ResumeLayout(false);
+            this.pageQueryStatistics.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.pageLabelSwitching.ResumeLayout(false);
             this.pageLabelSwitching.PerformLayout();
             this.grpLabelSwitchingGet.ResumeLayout(false);
@@ -680,9 +986,9 @@ namespace LibraryManagementBackground
             this.grpLabelSwitchingSet.ResumeLayout(false);
             this.pageMakingCard.ResumeLayout(false);
             this.pageMakingCard.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
+            this.grpUserGet.ResumeLayout(false);
+            this.grpUserGet.PerformLayout();
+            this.grpUserSet.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -701,54 +1007,83 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.ColumnHeader cnCreateDate;
         private System.Windows.Forms.ColumnHeader cnUpdateDate;
         private System.Windows.Forms.GroupBox grpLabelSwitchingGet;
-        private System.Windows.Forms.GroupBox grpLabelSwitchingSet;
         private System.Windows.Forms.Button btnLabelSwitchingQuery;
         private System.Windows.Forms.TextBox txtInstrumentType;
         private System.Windows.Forms.TextBox txtInstrumentName;
         private System.Windows.Forms.Label lblInstrumentType;
         private System.Windows.Forms.Label lblInstrumentName;
-        private System.Windows.Forms.Button btnLabelSwitchingImport;
-        private System.Windows.Forms.Button btnLabelSwitchingAdd;
         private System.Windows.Forms.RadioButton rdoLabelSwitchingQueryOrderDesc;
         private System.Windows.Forms.RadioButton rdoLabelSwitchingQueryOrderAsc;
         private System.Windows.Forms.Label lblLabelSwitchingQueryOrder;
-        private System.Windows.Forms.ComboBox cboLabelSwitchingQueryOrder;
-        private System.Windows.Forms.Button btnLabelSwitchingDelete;
-        private System.Windows.Forms.Button btnLabelSwitchingUpdate;
         private System.Windows.Forms.ColumnHeader cnTagCode;
-        private System.Windows.Forms.Button btnLabelSwitchingDownload;
         private System.Windows.Forms.Label lblLabelSwitchingProgress2;
         private System.Windows.Forms.ProgressBar prgLabelSwitching2;
         private System.Windows.Forms.Label lblLabelSwitchingProgress1;
         private System.Windows.Forms.ProgressBar prgLabelSwitching1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ProgressBar progressBar2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label lblUserProgress1;
+        private System.Windows.Forms.ProgressBar prgUser1;
+        private System.Windows.Forms.Label lblUserProgress2;
+        private System.Windows.Forms.ProgressBar prgUser2;
+        private System.Windows.Forms.GroupBox grpUserGet;
+        private System.Windows.Forms.RadioButton rdoUserQueryOrderDesc;
+        private System.Windows.Forms.RadioButton rdoUserQueryOrderAsc;
+        private System.Windows.Forms.Label lblUserQueryOrde;
+        private System.Windows.Forms.ComboBox cboUserQueryOrder;
+        private System.Windows.Forms.Button btnUserQuery;
+        private System.Windows.Forms.TextBox txtUserCardCode;
+        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.Label lblUserCardCode;
+        private System.Windows.Forms.Label lblUserName;
+        private System.Windows.Forms.GroupBox grpUserSet;
+        private System.Windows.Forms.Button btnUserDownload;
+        private System.Windows.Forms.Button btnUserDelete;
+        private System.Windows.Forms.Button btnUserUpdate;
+        private System.Windows.Forms.Button btnUserImport;
+        private System.Windows.Forms.Button btnUserAdd;
+        private System.Windows.Forms.ListView lvwUser;
+        private System.Windows.Forms.ColumnHeader cnUserId;
+        private System.Windows.Forms.ColumnHeader cnUserIndex;
+        private System.Windows.Forms.ColumnHeader cnUserCardCode;
+        private System.Windows.Forms.ColumnHeader cnUserStudentCode;
+        private System.Windows.Forms.ColumnHeader cnUserName;
+        private System.Windows.Forms.ColumnHeader cnUserCreateTime;
+        private System.Windows.Forms.ColumnHeader cnUserUpdateTime;
+        private System.Windows.Forms.ListView lvwCirculation;
+        private System.Windows.Forms.ColumnHeader cnCirculationId;
+        private System.Windows.Forms.ColumnHeader cnCirculationIndex;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ComboBox cboLabelSwitchingQueryOrder;
+        private System.Windows.Forms.TextBox txtUserStudentCode;
+        private System.Windows.Forms.Label lblUserStudentCode;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.DateTimePicker dtpLendTimeEnd;
+        private System.Windows.Forms.DateTimePicker dtpLendTimeStart;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtUserStudentGet;
+        private System.Windows.Forms.TextBox txtUserNameGet;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton rdoCirculationOrderDesc;
+        private System.Windows.Forms.RadioButton rdoCirculationOrderAsc;
+        private System.Windows.Forms.Label lblCirculation;
+        private System.Windows.Forms.ComboBox cboCirculationOrder;
+        private System.Windows.Forms.Button btnQueryCirculation;
+        private System.Windows.Forms.TextBox txtInstrumentTypeGet;
+        private System.Windows.Forms.TextBox txtInstrumentNameGet;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox grpLabelSwitchingSet;
+        private System.Windows.Forms.Button btnLabelSwitchingDownload;
+        private System.Windows.Forms.Button btnLabelSwitchingDelete;
+        private System.Windows.Forms.Button btnLabelSwitchingUpdate;
+        private System.Windows.Forms.Button btnLabelSwitchingImport;
+        private System.Windows.Forms.Button btnLabelSwitchingAdd;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
     }
 }
 
