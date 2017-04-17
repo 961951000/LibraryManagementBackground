@@ -297,6 +297,7 @@ namespace LibraryManagementBackground
                             Tag = entity.Id,
                             Text = (i + 1).ToString()
                         };
+                        item.SubItems.Add(entity.Tid);
                         item.SubItems.Add(entity.Name);
                         item.SubItems.Add(entity.Author);
                         item.SubItems.Add(entity.Createdate.ToString());
@@ -513,7 +514,7 @@ namespace LibraryManagementBackground
                     var items = lvwBook.FocusedItem.SubItems;
                     var entity = new TBook
                     {
-                        Id = Convert.ToInt32(lvwBook.Tag),
+                        Id = Convert.ToInt32(lvwBook.Items[lvwBook.SelectedIndices[0]].Tag),
                         Tid = items[1].Text,
                         Name = items[2].Text,
                         Author = items[3].Text
@@ -767,7 +768,7 @@ namespace LibraryManagementBackground
                     var items = lvwUser.FocusedItem.SubItems;
                     var entity = new TUser
                     {
-                        Id = Convert.ToInt32(lvwUser.Tag),
+                        Id = Convert.ToInt32(lvwUser.Items[lvwUser.SelectedIndices[0]].Tag),
                         Cardcode = items[1].Text,
                         Patroncode = items[2].Text,
                         Name = items[3].Text
