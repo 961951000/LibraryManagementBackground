@@ -21,14 +21,6 @@ namespace LibraryManagementBackground.ViewModels
             get;
         }
         /// <summary>
-        /// 流通类型
-        /// </summary>
-        public string Circulationtype
-        {
-            set;
-            get;
-        }
-        /// <summary>
         /// 图书电子标签
         /// </summary>
         public string Bookbarcode
@@ -37,9 +29,9 @@ namespace LibraryManagementBackground.ViewModels
             get;
         }
         /// <summary>
-        /// 学籍号
+        /// 借出人学籍号
         /// </summary>
-        public string Patroncode
+        public string LendPatronCode
         {
             set;
             get;
@@ -53,7 +45,23 @@ namespace LibraryManagementBackground.ViewModels
             get;
         }
         /// <summary>
-        /// 归还时间
+        /// 借出人姓名
+        /// </summary>
+        public string LendUserName
+        {
+            set;
+            get;
+        }
+        /// <summary>
+        /// 归还人学籍号
+        /// </summary>
+        public string ReturnPatronCode
+        {
+            set;
+            get;
+        }
+        /// <summary>
+        /// 归还人借出时间
         /// </summary>
         public DateTime? ReturnTime
         {
@@ -61,7 +69,15 @@ namespace LibraryManagementBackground.ViewModels
             get;
         }
         /// <summary>
-        /// 仪器型号
+        /// 归还人姓名
+        /// </summary>
+        public string ReturnUserName
+        {
+            set;
+            get;
+        }
+        /// <summary>
+        /// 仪器名称
         /// </summary>
         public string BookName
         {
@@ -69,29 +85,13 @@ namespace LibraryManagementBackground.ViewModels
             get;
         }
         /// <summary>
-        /// 读者卡号
+        /// 仪器型号
         /// </summary>
         public string Author
         {
             set;
             get;
-        }
-        /// <summary>
-        /// 学生姓名
-        /// </summary>
-        public string UserName
-        {
-            set;
-            get;
-        }
-        /// <summary>
-        /// 读者卡号
-        /// </summary>
-        public string CardCode
-        {
-            set;
-            get;
-        }
+        }       
         #endregion Model
     }
 }

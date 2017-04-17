@@ -29,9 +29,9 @@ namespace LibraryManagementBackground.Forms
                 using (var db = new MsSqlDbContext())
                 {
                     var entity = db.User.Single(x => x.Id == _entity.Id);
-                    txtCardCode.Text = entity.Cardcode;
-                    txtStudentCode.Text = entity.Patroncode;
-                    txtName.Text = entity.Name;
+                    entity.Cardcode = txtCardCode.Text;
+                    entity.Patroncode = txtStudentCode.Text;
+                    entity.Name = txtName.Text;
                     entity.Updatedate = DateTime.Now;
                     //db.Entry(entity).State = System.Data.Entity.EntityState.Modified;//修改
                     db.SaveChanges();

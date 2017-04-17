@@ -46,9 +46,9 @@ namespace LibraryManagementBackground
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dtpLendTimeEnd = new System.Windows.Forms.DateTimePicker();
-            this.txtUserNameGet = new System.Windows.Forms.TextBox();
+            this.txtLendUserNameGet = new System.Windows.Forms.TextBox();
             this.dtpLendTimeStart = new System.Windows.Forms.DateTimePicker();
-            this.txtUserStudentGet = new System.Windows.Forms.TextBox();
+            this.txtLendUserStudentGet = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lvwCirculation = new System.Windows.Forms.ListView();
             this.cnCirculationId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -119,6 +119,7 @@ namespace LibraryManagementBackground
             this.cnUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserCreateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserUpdateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnImportCirculation = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.pageQueryStatistics.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -156,6 +157,7 @@ namespace LibraryManagementBackground
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnImportCirculation);
             this.groupBox1.Controls.Add(this.txtInstrumentNameGet);
             this.groupBox1.Controls.Add(this.rdoCirculationOrderDesc);
             this.groupBox1.Controls.Add(this.rdoCirculationOrderAsc);
@@ -169,9 +171,9 @@ namespace LibraryManagementBackground
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dtpLendTimeEnd);
-            this.groupBox1.Controls.Add(this.txtUserNameGet);
+            this.groupBox1.Controls.Add(this.txtLendUserNameGet);
             this.groupBox1.Controls.Add(this.dtpLendTimeStart);
-            this.groupBox1.Controls.Add(this.txtUserStudentGet);
+            this.groupBox1.Controls.Add(this.txtLendUserStudentGet);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(25, 6);
             this.groupBox1.Name = "groupBox1";
@@ -232,8 +234,8 @@ namespace LibraryManagementBackground
             this.cboCirculationOrder.Items.AddRange(new object[] {
             "仪器名称",
             "仪器型号",
-            "学生姓名",
-            "学 籍 号",
+            "借出人姓名",
+            "借出人学籍号",
             "借出时间",
             "归还时间"});
             this.cboCirculationOrder.Location = new System.Drawing.Point(552, 113);
@@ -272,9 +274,9 @@ namespace LibraryManagementBackground
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(233, 60);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(77, 12);
             this.label2.TabIndex = 31;
-            this.label2.Text = "学生姓名：";
+            this.label2.Text = "借出人姓名：";
             // 
             // label4
             // 
@@ -288,11 +290,11 @@ namespace LibraryManagementBackground
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(233, 113);
+            this.label1.Location = new System.Drawing.Point(221, 113);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.Size = new System.Drawing.Size(89, 12);
             this.label1.TabIndex = 32;
-            this.label1.Text = "学 籍 号：";
+            this.label1.Text = "借出人学籍号：";
             // 
             // dtpLendTimeEnd
             // 
@@ -301,12 +303,12 @@ namespace LibraryManagementBackground
             this.dtpLendTimeEnd.Size = new System.Drawing.Size(200, 21);
             this.dtpLendTimeEnd.TabIndex = 37;
             // 
-            // txtUserNameGet
+            // txtLendUserNameGet
             // 
-            this.txtUserNameGet.Location = new System.Drawing.Point(304, 58);
-            this.txtUserNameGet.Name = "txtUserNameGet";
-            this.txtUserNameGet.Size = new System.Drawing.Size(100, 21);
-            this.txtUserNameGet.TabIndex = 33;
+            this.txtLendUserNameGet.Location = new System.Drawing.Point(316, 58);
+            this.txtLendUserNameGet.Name = "txtLendUserNameGet";
+            this.txtLendUserNameGet.Size = new System.Drawing.Size(100, 21);
+            this.txtLendUserNameGet.TabIndex = 33;
             // 
             // dtpLendTimeStart
             // 
@@ -315,12 +317,12 @@ namespace LibraryManagementBackground
             this.dtpLendTimeStart.Size = new System.Drawing.Size(200, 21);
             this.dtpLendTimeStart.TabIndex = 36;
             // 
-            // txtUserStudentGet
+            // txtLendUserStudentGet
             // 
-            this.txtUserStudentGet.Location = new System.Drawing.Point(304, 110);
-            this.txtUserStudentGet.Name = "txtUserStudentGet";
-            this.txtUserStudentGet.Size = new System.Drawing.Size(100, 21);
-            this.txtUserStudentGet.TabIndex = 34;
+            this.txtLendUserStudentGet.Location = new System.Drawing.Point(316, 110);
+            this.txtLendUserStudentGet.Name = "txtLendUserStudentGet";
+            this.txtLendUserStudentGet.Size = new System.Drawing.Size(100, 21);
+            this.txtLendUserStudentGet.TabIndex = 34;
             // 
             // label3
             // 
@@ -365,25 +367,25 @@ namespace LibraryManagementBackground
             // 
             // columnHeader10
             // 
-            this.columnHeader10.Text = "仪器名称";
+            this.columnHeader10.Text = "借出人姓名";
             this.columnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader10.Width = 160;
             // 
             // columnHeader11
             // 
-            this.columnHeader11.Text = "仪器型号";
+            this.columnHeader11.Text = "借出人学籍号";
             this.columnHeader11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader11.Width = 160;
             // 
             // columnHeader12
             // 
-            this.columnHeader12.Text = "学生姓名";
+            this.columnHeader12.Text = "仪器名称";
             this.columnHeader12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader12.Width = 160;
             // 
             // columnHeader13
             // 
-            this.columnHeader13.Text = "学籍号";
+            this.columnHeader13.Text = "仪器型号";
             this.columnHeader13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader13.Width = 160;
             // 
@@ -687,7 +689,7 @@ namespace LibraryManagementBackground
             this.pageMakingCard.Padding = new System.Windows.Forms.Padding(3);
             this.pageMakingCard.Size = new System.Drawing.Size(1078, 589);
             this.pageMakingCard.TabIndex = 2;
-            this.pageMakingCard.Text = "开证办卡";
+            this.pageMakingCard.Text = "开卡办证";
             this.pageMakingCard.UseVisualStyleBackColor = true;
             // 
             // lblUserProgress1
@@ -798,7 +800,7 @@ namespace LibraryManagementBackground
             "学生姓名",
             "卡    号",
             "学 籍 号",
-            "入库时间",
+            "创建时间",
             "修改时间"});
             this.cboUserQueryOrder.Location = new System.Drawing.Point(132, 103);
             this.cboUserQueryOrder.Name = "cboUserQueryOrder";
@@ -966,6 +968,16 @@ namespace LibraryManagementBackground
             this.cnUserUpdateTime.Text = "修改时间";
             this.cnUserUpdateTime.Width = 200;
             // 
+            // btnImportCirculation
+            // 
+            this.btnImportCirculation.Location = new System.Drawing.Point(864, 138);
+            this.btnImportCirculation.Name = "btnImportCirculation";
+            this.btnImportCirculation.Size = new System.Drawing.Size(75, 23);
+            this.btnImportCirculation.TabIndex = 39;
+            this.btnImportCirculation.Text = "导出表格";
+            this.btnImportCirculation.UseVisualStyleBackColor = true;
+            this.btnImportCirculation.Click += new System.EventHandler(this.btnImportCirculation_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -973,7 +985,7 @@ namespace LibraryManagementBackground
             this.ClientSize = new System.Drawing.Size(1114, 617);
             this.Controls.Add(this.tabMain);
             this.Name = "FrmMain";
-            this.Text = "图书馆管理后台";
+            this.Text = "上海市实验学校仪器设备管理系统 - 管理后台";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.tabMain.ResumeLayout(false);
             this.pageQueryStatistics.ResumeLayout(false);
@@ -1063,8 +1075,8 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.DateTimePicker dtpLendTimeEnd;
         private System.Windows.Forms.DateTimePicker dtpLendTimeStart;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtUserStudentGet;
-        private System.Windows.Forms.TextBox txtUserNameGet;
+        private System.Windows.Forms.TextBox txtLendUserStudentGet;
+        private System.Windows.Forms.TextBox txtLendUserNameGet;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton rdoCirculationOrderDesc;
@@ -1084,6 +1096,7 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.Button btnLabelSwitchingAdd;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.Button btnImportCirculation;
     }
 }
 

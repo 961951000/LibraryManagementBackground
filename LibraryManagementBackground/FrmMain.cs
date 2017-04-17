@@ -134,12 +134,12 @@ namespace LibraryManagementBackground
             {
                 using (var db = new MsSqlDbContext())
                 {
-                    const string sql = "SELECT d.Id,d.BookBarcode,d.PatronCode,d.LendTime,d.ReturnTime,e.Name AS 'BookName',e.Author,f.Name AS 'UserName',f.CardCode FROM (SELECT MAX (ID) AS 'Id',MAX (BookBarcode) AS 'BookBarcode',MAX (PatronCode) AS 'PatronCode',MAX (LendTime) AS 'LendTime',MIN (ReturnTime) AS 'ReturnTime' FROM (SELECT a.ID,a.BookBarcode,a.PatronCode,a.CirculationDate AS 'LendTime',b.CirculationDate AS 'ReturnTime' FROM (SELECT * FROM L_Circulation WHERE CirculationType = '1001') AS a LEFT JOIN (SELECT * FROM L_Circulation WHERE CirculationType = '1002') AS b ON b.BookBarcode = a.BookBarcode AND b.CirculationDate > a.CirculationDate) c GROUP BY ID) AS d LEFT JOIN T_Book AS e ON e.Barcode = d.BookBarcode LEFT JOIN T_User AS f ON f.PatronCode = d.PatronCode";
+                    const string sql = "SELECT e.ID AS 'Id',MIN (e.BookBarcode) AS 'BookBarcode',MIN (e.PatronCode) AS 'LendPatronCode',MIN (e.CirculationDate) AS 'LendTime',MIN (e.Name) AS 'LendUserName',MIN (f.PatronCode) AS 'ReturnPatronCode',MIN (f.CirculationDate) AS 'ReturnTime',MIN (f.Name) AS 'ReturnUserName',MIN (g.Name) AS 'BookName',MIN (g.Author) AS 'Author' FROM(SELECT a.ID,a.BookBarcode,a.PatronCode,a.CirculationDate,b.Name FROM L_Circulation AS a LEFT JOIN T_User AS b ON a.PatronCode = b.PatronCode WHERE a.CirculationType = '1001') AS e LEFT JOIN (SELECT c.BookBarcode,c.PatronCode,c.CirculationDate,d.Name FROM L_Circulation AS c LEFT JOIN T_User AS d ON c.PatronCode = d.PatronCode WHERE c.CirculationType = '1002') AS f ON e.BookBarcode = f.BookBarcode AND e.CirculationDate < f.CirculationDate LEFT JOIN T_Book AS g ON e.BookBarcode = g.Barcode GROUP BY e.ID";
                     var query = db.Database.SqlQuery<CirculationView>(sql).Where(x => x.LendTime >= DateTime.Parse(dtpLendTimeStart.Value.ToString("yyyy-MM-dd 00:00:00")) && x.LendTime < DateTime.Parse(dtpLendTimeEnd.Value.AddDays(1).ToString("yyyy-MM-dd 00:00:00")));
                     var bookName = txtInstrumentNameGet.Text;
                     var author = txtInstrumentTypeGet.Text;
-                    var userName = txtUserNameGet.Text;
-                    var patroncode = txtUserStudentGet.Text;
+                    var lendUserName = txtLendUserNameGet.Text;
+                    var lendPatronCode = txtLendUserStudentGet.Text;
                     if (!string.IsNullOrEmpty(bookName))
                     {
                         query = query.Where(x => x.BookName.Contains(bookName));
@@ -148,13 +148,13 @@ namespace LibraryManagementBackground
                     {
                         query = query.Where(x => x.Author.Contains(author));
                     }
-                    if (!string.IsNullOrEmpty(userName))
+                    if (!string.IsNullOrEmpty(lendUserName))
                     {
-                        query = query.Where(x => x.UserName.Contains(userName));
+                        query = query.Where(x => x.LendUserName.Contains(lendUserName));
                     }
-                    if (!string.IsNullOrEmpty(patroncode))
+                    if (!string.IsNullOrEmpty(lendPatronCode))
                     {
-                        query = query.Where(x => x.Patroncode.Contains(patroncode));
+                        query = query.Where(x => x.LendPatronCode.Contains(lendPatronCode));
                     }
                     switch (cboCirculationOrder.SelectedIndex)
                     {
@@ -175,15 +175,15 @@ namespace LibraryManagementBackground
                         case 2:
                             {
                                 query = rdoCirculationOrderAsc.Checked
-                                    ? query.OrderBy(x => x.UserName)
-                                    : query.OrderByDescending(x => x.UserName);
+                                    ? query.OrderBy(x => x.LendUserName)
+                                    : query.OrderByDescending(x => x.LendUserName);
                             }
                             break;
                         case 3:
                             {
                                 query = rdoCirculationOrderAsc.Checked
-                                    ? query.OrderBy(x => x.Patroncode)
-                                    : query.OrderByDescending(x => x.Patroncode);
+                                    ? query.OrderBy(x => x.LendPatronCode)
+                                    : query.OrderByDescending(x => x.LendPatronCode);
                             }
                             break;
                         case 4:
@@ -210,10 +210,10 @@ namespace LibraryManagementBackground
                             Text = entity.Id.ToString()
                         };
                         item.SubItems.Add((i + 1).ToString());
+                        item.SubItems.Add(entity.LendUserName);
+                        item.SubItems.Add(entity.LendPatronCode);
                         item.SubItems.Add(entity.BookName);
                         item.SubItems.Add(entity.Author);
-                        item.SubItems.Add(entity.UserName);
-                        item.SubItems.Add(entity.Patroncode);
                         item.SubItems.Add(entity.LendTime.ToString());
                         item.SubItems.Add(entity.ReturnTime.ToString());
                         lvwCirculation.Items.Add(item);
@@ -345,7 +345,8 @@ namespace LibraryManagementBackground
                 {
                     Multiselect = true,
                     Title = @"请选择文件",
-                    Filter = @"所有文件(*.*)|*.*"
+                    //Filter = @"所有文件(*.*)|*.*"
+                    Filter = @"Excel文件(*.xls;*.xlsx)|*.xls;*.xlsx"
                 };
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -601,7 +602,8 @@ namespace LibraryManagementBackground
                 {
                     Multiselect = true,
                     Title = @"请选择文件",
-                    Filter = @"所有文件(*.*)|*.*"
+                    //Filter = @"所有文件(*.*)|*.*"
+                    Filter = @"Excel文件(*.xls;*.xlsx)|*.xls;*.xlsx"
                 };
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -1005,6 +1007,11 @@ namespace LibraryManagementBackground
                 return true;
             }
             return false;
+        }
+
+        private void btnImportCirculation_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

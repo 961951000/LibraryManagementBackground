@@ -7,7 +7,7 @@
     <ProjectGuid>{F4608E56-B44C-4596-99EF-063B41AD2BB4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>LibraryManagementBackground</RootNamespace>
-    <AssemblyName>图书馆软件管理后台</AssemblyName>
+    <AssemblyName>上海市实验学校仪器设备管理系统 - 管理后台</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
