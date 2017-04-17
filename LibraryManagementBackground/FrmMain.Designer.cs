@@ -33,6 +33,7 @@ namespace LibraryManagementBackground
             this.tabMain = new System.Windows.Forms.TabControl();
             this.pageQueryStatistics = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnImportCirculation = new System.Windows.Forms.Button();
             this.txtInstrumentNameGet = new System.Windows.Forms.TextBox();
             this.rdoCirculationOrderDesc = new System.Windows.Forms.RadioButton();
             this.rdoCirculationOrderAsc = new System.Windows.Forms.RadioButton();
@@ -51,7 +52,6 @@ namespace LibraryManagementBackground
             this.txtLendUserStudentGet = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lvwCirculation = new System.Windows.Forms.ListView();
-            this.cnCirculationId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnCirculationIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -81,7 +81,6 @@ namespace LibraryManagementBackground
             this.btnLabelSwitchingImport = new System.Windows.Forms.Button();
             this.btnLabelSwitchingAdd = new System.Windows.Forms.Button();
             this.lvwBook = new System.Windows.Forms.ListView();
-            this.chId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnTagCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -112,14 +111,12 @@ namespace LibraryManagementBackground
             this.btnUserImport = new System.Windows.Forms.Button();
             this.btnUserAdd = new System.Windows.Forms.Button();
             this.lvwUser = new System.Windows.Forms.ListView();
-            this.cnUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserCardCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserStudentCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserCreateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cnUserUpdateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnImportCirculation = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.pageQueryStatistics.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -180,6 +177,16 @@ namespace LibraryManagementBackground
             this.groupBox1.Size = new System.Drawing.Size(1013, 201);
             this.groupBox1.TabIndex = 43;
             this.groupBox1.TabStop = false;
+            // 
+            // btnImportCirculation
+            // 
+            this.btnImportCirculation.Location = new System.Drawing.Point(864, 138);
+            this.btnImportCirculation.Name = "btnImportCirculation";
+            this.btnImportCirculation.Size = new System.Drawing.Size(75, 23);
+            this.btnImportCirculation.TabIndex = 39;
+            this.btnImportCirculation.Text = "导出表格";
+            this.btnImportCirculation.UseVisualStyleBackColor = true;
+            this.btnImportCirculation.Click += new System.EventHandler(this.btnImportCirculation_Click);
             // 
             // txtInstrumentNameGet
             // 
@@ -337,7 +344,6 @@ namespace LibraryManagementBackground
             // 
             this.lvwCirculation.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.lvwCirculation.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cnCirculationId,
             this.cnCirculationIndex,
             this.columnHeader10,
             this.columnHeader11,
@@ -353,11 +359,6 @@ namespace LibraryManagementBackground
             this.lvwCirculation.TabIndex = 14;
             this.lvwCirculation.UseCompatibleStateImageBehavior = false;
             this.lvwCirculation.View = System.Windows.Forms.View.Details;
-            // 
-            // cnCirculationId
-            // 
-            this.cnCirculationId.Text = "编号";
-            this.cnCirculationId.Width = 0;
             // 
             // cnCirculationIndex
             // 
@@ -624,7 +625,6 @@ namespace LibraryManagementBackground
             // 
             this.lvwBook.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.lvwBook.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chId,
             this.cnIndex,
             this.cnTagCode,
             this.chName,
@@ -639,11 +639,6 @@ namespace LibraryManagementBackground
             this.lvwBook.TabIndex = 0;
             this.lvwBook.UseCompatibleStateImageBehavior = false;
             this.lvwBook.View = System.Windows.Forms.View.Details;
-            // 
-            // chId
-            // 
-            this.chId.Text = "编号";
-            this.chId.Width = 0;
             // 
             // cnIndex
             // 
@@ -917,7 +912,6 @@ namespace LibraryManagementBackground
             // 
             this.lvwUser.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.lvwUser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cnUserId,
             this.cnUserIndex,
             this.cnUserCardCode,
             this.cnUserStudentCode,
@@ -932,11 +926,6 @@ namespace LibraryManagementBackground
             this.lvwUser.TabIndex = 7;
             this.lvwUser.UseCompatibleStateImageBehavior = false;
             this.lvwUser.View = System.Windows.Forms.View.Details;
-            // 
-            // cnUserId
-            // 
-            this.cnUserId.Text = "编号";
-            this.cnUserId.Width = 0;
             // 
             // cnUserIndex
             // 
@@ -967,16 +956,6 @@ namespace LibraryManagementBackground
             // 
             this.cnUserUpdateTime.Text = "修改时间";
             this.cnUserUpdateTime.Width = 200;
-            // 
-            // btnImportCirculation
-            // 
-            this.btnImportCirculation.Location = new System.Drawing.Point(864, 138);
-            this.btnImportCirculation.Name = "btnImportCirculation";
-            this.btnImportCirculation.Size = new System.Drawing.Size(75, 23);
-            this.btnImportCirculation.TabIndex = 39;
-            this.btnImportCirculation.Text = "导出表格";
-            this.btnImportCirculation.UseVisualStyleBackColor = true;
-            this.btnImportCirculation.Click += new System.EventHandler(this.btnImportCirculation_Click);
             // 
             // FrmMain
             // 
@@ -1012,7 +991,6 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.TabPage pageLabelSwitching;
         private System.Windows.Forms.TabPage pageMakingCard;
         private System.Windows.Forms.ListView lvwBook;
-        private System.Windows.Forms.ColumnHeader chId;
         private System.Windows.Forms.ColumnHeader cnIndex;
         private System.Windows.Forms.ColumnHeader chName;
         private System.Windows.Forms.ColumnHeader chType;
@@ -1053,7 +1031,6 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.Button btnUserImport;
         private System.Windows.Forms.Button btnUserAdd;
         private System.Windows.Forms.ListView lvwUser;
-        private System.Windows.Forms.ColumnHeader cnUserId;
         private System.Windows.Forms.ColumnHeader cnUserIndex;
         private System.Windows.Forms.ColumnHeader cnUserCardCode;
         private System.Windows.Forms.ColumnHeader cnUserStudentCode;
@@ -1061,7 +1038,6 @@ namespace LibraryManagementBackground
         private System.Windows.Forms.ColumnHeader cnUserCreateTime;
         private System.Windows.Forms.ColumnHeader cnUserUpdateTime;
         private System.Windows.Forms.ListView lvwCirculation;
-        private System.Windows.Forms.ColumnHeader cnCirculationId;
         private System.Windows.Forms.ColumnHeader cnCirculationIndex;
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ColumnHeader columnHeader11;

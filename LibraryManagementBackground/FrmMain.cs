@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -207,9 +208,9 @@ namespace LibraryManagementBackground
                         var entity = list[i];
                         var item = new ListViewItem
                         {
-                            Text = entity.Id.ToString()
+                            Tag = entity.Id,
+                            Text = (i + 1).ToString()
                         };
-                        item.SubItems.Add((i + 1).ToString());
                         item.SubItems.Add(entity.LendUserName);
                         item.SubItems.Add(entity.LendPatronCode);
                         item.SubItems.Add(entity.BookName);
@@ -287,20 +288,19 @@ namespace LibraryManagementBackground
                             }
                             break;
                     }
-                    var books = query.ToList();
-                    for (var i = 0; i < books.Count; i++)
+                    var list = query.ToList();
+                    for (var i = 0; i < list.Count; i++)
                     {
-                        var book = books[i];
+                        var entity = list[i];
                         var item = new ListViewItem
                         {
-                            Text = book.Id.ToString()
+                            Tag = entity.Id,
+                            Text = (i + 1).ToString()
                         };
-                        item.SubItems.Add((i + 1).ToString());
-                        item.SubItems.Add(book.Tid);
-                        item.SubItems.Add(book.Name);
-                        item.SubItems.Add(book.Author);
-                        item.SubItems.Add(book.Createdate.ToString());
-                        item.SubItems.Add(book.Updatedate.ToString());
+                        item.SubItems.Add(entity.Name);
+                        item.SubItems.Add(entity.Author);
+                        item.SubItems.Add(entity.Createdate.ToString());
+                        item.SubItems.Add(entity.Updatedate.ToString());
                         lvwBook.Items.Add(item);
                     }
                 }
@@ -513,10 +513,10 @@ namespace LibraryManagementBackground
                     var items = lvwBook.FocusedItem.SubItems;
                     var entity = new TBook
                     {
-                        Id = Convert.ToInt32(items[0].Text),
-                        Tid = items[2].Text,
-                        Name = items[3].Text,
-                        Author = items[4].Text
+                        Id = Convert.ToInt32(lvwBook.Tag),
+                        Tid = items[1].Text,
+                        Name = items[2].Text,
+                        Author = items[3].Text
                     };
                     var form = new FrmUpdateInstrument(entity)
                     {
@@ -765,12 +765,12 @@ namespace LibraryManagementBackground
                 if (lvwUser.SelectedIndices.Count > 0)
                 {
                     var items = lvwUser.FocusedItem.SubItems;
-                    var entity = new TUser()
+                    var entity = new TUser
                     {
-                        Id = Convert.ToInt32(items[0].Text),
-                        Cardcode = items[2].Text,
-                        Patroncode = items[3].Text,
-                        Name = items[4].Text
+                        Id = Convert.ToInt32(lvwUser.Tag),
+                        Cardcode = items[1].Text,
+                        Patroncode = items[2].Text,
+                        Name = items[3].Text
                     };
                     var form = new FrmUpdateUser(entity)
                     {
@@ -889,20 +889,20 @@ namespace LibraryManagementBackground
                             }
                             break;
                     }
-                    var users = query.ToList();
-                    for (var i = 0; i < users.Count; i++)
+                    var list = query.ToList();
+                    for (var i = 0; i < list.Count; i++)
                     {
-                        var user = users[i];
+                        var entity = list[i];
                         var item = new ListViewItem
                         {
-                            Text = user.Id.ToString()
+                            Tag = entity.Id,
+                            Text = (i + 1).ToString()
                         };
-                        item.SubItems.Add((i + 1).ToString());
-                        item.SubItems.Add(user.Cardcode);
-                        item.SubItems.Add(user.Patroncode);
-                        item.SubItems.Add(user.Name);
-                        item.SubItems.Add(user.Createdate.ToString());
-                        item.SubItems.Add(user.Updatedate.ToString());
+                        item.SubItems.Add(entity.Cardcode);
+                        item.SubItems.Add(entity.Patroncode);
+                        item.SubItems.Add(entity.Name);
+                        item.SubItems.Add(entity.Createdate.ToString());
+                        item.SubItems.Add(entity.Updatedate.ToString());
                         lvwUser.Items.Add(item);
                     }
                 }
@@ -1011,7 +1011,19 @@ namespace LibraryManagementBackground
 
         private void btnImportCirculation_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                ExportExcel.OutToExcelFromDataListView(ConfigurationManager.AppSettings["ExcelImport"], lvwCirculation, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Models.Message.FailMessage, @"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#if DEBUG
+                throw;
+#else
+                Loger.Error(ex);
+#endif
+            }
         }
     }
 }

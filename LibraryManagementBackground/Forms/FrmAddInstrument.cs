@@ -36,7 +36,6 @@ namespace LibraryManagementBackground.Forms
                     Createby = 0,
                     Updateby = 0
                 };
-
                 using (var db = new MsSqlDbContext())
                 {
                     db.Book.Add(entity);
