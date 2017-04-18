@@ -190,10 +190,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resource\Tool\学生信息导入表格.xlsx">
+    <None Include="Resource\Files\ExcelImport\学生信息导入表格.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resource\Tool\标签转换导入表格.xlsx">
+    <None Include="Resource\Files\ExcelImport\标签转换导入表格.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resource\Tool\软件安装说明.docx">
