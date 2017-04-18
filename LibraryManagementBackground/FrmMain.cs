@@ -467,7 +467,7 @@ namespace LibraryManagementBackground
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var foldPath = dialog.SelectedPath;
-                    var path = Path.GetFullPath(@"../../Resource/Tool/标签转换导入表格.xlsx");
+                    var path = Path.GetFullPath(@"Resource/Tool/标签转换导入表格.xlsx");
                     var filename = Path.Combine(foldPath, Path.GetFileName(path));
                     ProgressBar prog;
                     Label label;
@@ -721,7 +721,7 @@ namespace LibraryManagementBackground
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var foldPath = dialog.SelectedPath;
-                    var path = Path.GetFullPath(@"../../Resource/Tool/ubuntu-16.10-desktop-amd64.iso");
+                    var path = Path.GetFullPath(@"Resource/Tool/ubuntu-16.10-desktop-amd64.iso");
                     var filename = Path.Combine(foldPath, Path.GetFileName(path));
                     ProgressBar prog;
                     Label label;
